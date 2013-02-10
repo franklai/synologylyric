@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_kget",
+    "displayname": "歌詞GET",
+    "description": "www.kget.jp",
+    "version": "1.0",
+    "site": "http://www.kget.jp/",
+    "module": "lyric.php",
+    "type": "lyric",
+    "class": "FujirouKget"
+}
+
