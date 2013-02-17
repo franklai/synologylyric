@@ -1,4 +1,9 @@
 <?php
+if (file_exists(__DIR__.'/fujirou_common.php')) {
+    require(__DIR__.'/fujirou_common.php');
+} else if (file_exists(__DIR__.'/../../include/fujirou_common.php')) {
+    require(__DIR__.'/../../include/fujirou_common.php');
+}
 
 class FujirouKget {
     private $searchPrefix = 'http://www.kget.jp/result/index.aspx';
@@ -28,7 +33,7 @@ class FujirouKget {
             $this->searchPrefix, urlencode($encodedArtist), urlencode($encodedTitle)
         );
 
-        $content = $this->getContent($searchUrl);
+        $content = \Fujirou\getContent($searchUrl);
 
         $item = $this->parseSearchResult($content);
         if ($item === FALSE) {
@@ -51,7 +56,13 @@ class FujirouKget {
 
         $content = mb_convert_encoding($content, 'UTF-8', 'SJIS');
 
-        $resultTable = $this->getSubString($content, '<table class="result"', '</table>');
+        $prefix = '<table class="result"';
+        $suffix = '</table>';
+
+        if (strpos($content, $prefix) === FALSE) {
+            return FALSE;
+        }
+        $resultTable = \Fujirou\getSubString($content, $prefix, $suffix);
 
         $resultTable = str_replace('</td></tr></table>', '', $resultTable);
         $resultItems = explode('</td><td>', $resultTable);
@@ -66,15 +77,15 @@ class FujirouKget {
         // 4. composer
         // 5. partial lyric
         $pattern = '/<a href="(.*)">.*<\/a>/';
-        $lyricUrl = $this->getFirstMatch($resultItems[1], $pattern);
+        $lyricUrl = \Fujirou\getFirstMatch($resultItems[1], $pattern);
 
         $pattern = '/<a href=".*">(.*)<\/a>/';
-        $title = $this->getFirstMatch($resultItems[1], $pattern);
+        $title = \Fujirou\getFirstMatch($resultItems[1], $pattern);
 
         $pattern = '/<a href=".*">(.*)<\/a>/';
-        $artist = $this->getFirstMatch($resultItems[2], $pattern);
+        $artist = \Fujirou\getFirstMatch($resultItems[2], $pattern);
 
-        $partial = $this->getFirstMatch($resultItems[5], $pattern);
+        $partial = \Fujirou\getFirstMatch($resultItems[5], $pattern);
 
         return array(
             'artist' => $artist,
@@ -93,13 +104,13 @@ class FujirouKget {
             return FALSE;
         }
 
-        $content = $this->getContent($id);
+        $content = \Fujirou\getContent($id);
         if (!$content) {
             return FALSE;
         }
 
         $pattern = '/lyric.swf\?sn=([a-zA-Z0-9\/]+)/';
-        $sn = $this->getFirstMatch($content, $pattern);
+        $sn = \Fujirou\getFirstMatch($content, $pattern);
         if ($sn === FALSE) {
             return FALSE;
         }
@@ -110,7 +121,7 @@ class FujirouKget {
             $sn
         );
 
-        $content = $this->getContent($lyricUrl);
+        $content = \Fujirou\getContent($lyricUrl);
         if (!$content) {
             return FALSE;
         }
@@ -122,52 +133,6 @@ class FujirouKget {
         $handle->addLyrics($lyric, $id);
 
         return TRUE;
-    }
-
-    private function getContent($url) {
-        $curl = curl_init();
-
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
-
-        curl_setopt($curl, CURLOPT_VERBOSE, TRUE);
-
-        curl_setopt($curl, CURLOPT_URL, $url);
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return $result;
-    }
-
-    private function getFirstMatch($string, $pattern) {
-        if (1 === preg_match($pattern, $string, $matches)) {
-            return $matches[1];
-        }
-        return FALSE;
-    }
-
-    private function getSubString($string, $prefix, $suffix) {
-        $start = strpos($string, $prefix);
-        if ($start === FALSE) {
-            echo "cannot find prefix, string:[$string], prefix[$prefix]\n";
-            return $string;
-        }
-
-        $end = strpos($string, $suffix, $start);
-        if ($end === FALSE) {
-            echo "cannot find suffix\n";
-            return $string;
-        }
-
-        if ($start >= $end) {
-            return $string;
-        }
-
-        return substr($string, $start, $end - $start + strlen($suffix));
     }
 }
 
