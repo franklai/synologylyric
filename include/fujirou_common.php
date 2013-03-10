@@ -9,13 +9,13 @@ class FujirouCommon
     {
         $curl = curl_init();
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
-        curl_setopt($curl, CURLOPT_VERBOSE, TRUE);
+        curl_setopt($curl, CURLOPT_VERBOSE, true);
 
         curl_setopt($curl, CURLOPT_URL, $url);
 
@@ -44,7 +44,7 @@ class FujirouCommon
 
         $content = self::getContent($searchUrl);
 
-        $json = json_decode($content, TRUE);
+        $json = json_decode($content, true);
 
         return $json['responseData']['results'];
     }
@@ -57,7 +57,19 @@ class FujirouCommon
         if (1 === preg_match($pattern, $string, $matches)) {
             return $matches[1];
         }
-        return FALSE;
+        return false;
+    }
+
+    /**
+     * given regular expression, return all matched first group in an array
+     */
+    public static function getAllFirstMatch($string, $pattern) {
+        $ret = preg_match_all($pattern, $string, $matches);
+        if ($ret > 0) {
+            return $matches[1];
+        } else {
+            return $ret;
+        }
     }
 
     /**
@@ -67,13 +79,13 @@ class FujirouCommon
     public static function getSubString($string, $prefix, $suffix)
     {
         $start = strpos($string, $prefix);
-        if ($start === FALSE) {
+        if ($start === false) {
             echo "cannot find prefix, string:[$string], prefix[$prefix]\n";
             return $string;
         }
 
         $end = strpos($string, $suffix, $start);
-        if ($end === FALSE) {
+        if ($end === false) {
             echo "cannot find suffix\n";
             return $string;
         }
@@ -91,6 +103,14 @@ class FujirouCommon
     public static function toOneLine($string)
     {
         return str_replace(array("\n", "\r"), '', $string);
+    }
+
+    /**
+     * decode HTML entity using UTF-8 encoding
+     */
+    public static function decodeHTML($string)
+    {
+        return html_entity_decode($string, ENT_QUOTES, 'UTF-8');
     }
 }
 
