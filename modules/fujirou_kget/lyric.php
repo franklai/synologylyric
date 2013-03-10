@@ -1,8 +1,10 @@
 <?php
-if (file_exists(__DIR__.'/fujirou_common.php')) {
-    require(__DIR__.'/fujirou_common.php');
-} else if (file_exists(__DIR__.'/../../include/fujirou_common.php')) {
-    require(__DIR__.'/../../include/fujirou_common.php');
+if (!class_exists('FujirouCommon')) {
+    if (file_exists(__DIR__.'/fujirou_common.php')) {
+        require(__DIR__.'/fujirou_common.php');
+    } else if (file_exists(__DIR__.'/../../include/fujirou_common.php')) {
+        require(__DIR__.'/../../include/fujirou_common.php');
+    }
 }
 
 class FujirouKget {
@@ -33,7 +35,7 @@ class FujirouKget {
             $this->searchPrefix, urlencode($encodedArtist), urlencode($encodedTitle)
         );
 
-        $content = \Fujirou\getContent($searchUrl);
+        $content = FujirouCommon::getContent($searchUrl);
 
         $item = $this->parseSearchResult($content);
         if ($item === FALSE) {
@@ -62,7 +64,7 @@ class FujirouKget {
         if (strpos($content, $prefix) === FALSE) {
             return FALSE;
         }
-        $resultTable = \Fujirou\getSubString($content, $prefix, $suffix);
+        $resultTable = FujirouCommon::getSubString($content, $prefix, $suffix);
 
         $resultTable = str_replace('</td></tr></table>', '', $resultTable);
         $resultItems = explode('</td><td>', $resultTable);
@@ -77,15 +79,15 @@ class FujirouKget {
         // 4. composer
         // 5. partial lyric
         $pattern = '/<a href="(.*)">.*<\/a>/';
-        $lyricUrl = \Fujirou\getFirstMatch($resultItems[1], $pattern);
+        $lyricUrl = FujirouCommon::getFirstMatch($resultItems[1], $pattern);
 
         $pattern = '/<a href=".*">(.*)<\/a>/';
-        $title = \Fujirou\getFirstMatch($resultItems[1], $pattern);
+        $title = FujirouCommon::getFirstMatch($resultItems[1], $pattern);
 
         $pattern = '/<a href=".*">(.*)<\/a>/';
-        $artist = \Fujirou\getFirstMatch($resultItems[2], $pattern);
+        $artist = FujirouCommon::getFirstMatch($resultItems[2], $pattern);
 
-        $partial = \Fujirou\getFirstMatch($resultItems[5], $pattern);
+        $partial = FujirouCommon::getFirstMatch($resultItems[5], $pattern);
 
         return array(
             'artist' => $artist,
@@ -104,13 +106,13 @@ class FujirouKget {
             return FALSE;
         }
 
-        $content = \Fujirou\getContent($id);
+        $content = FujirouCommon::getContent($id);
         if (!$content) {
             return FALSE;
         }
 
         $pattern = '/lyric.swf\?sn=([a-zA-Z0-9\/]+)/';
-        $sn = \Fujirou\getFirstMatch($content, $pattern);
+        $sn = FujirouCommon::getFirstMatch($content, $pattern);
         if ($sn === FALSE) {
             return FALSE;
         }
@@ -121,7 +123,7 @@ class FujirouKget {
             $sn
         );
 
-        $content = \Fujirou\getContent($lyricUrl);
+        $content = FujirouCommon::getContent($lyricUrl);
         if (!$content) {
             return FALSE;
         }

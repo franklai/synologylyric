@@ -1,8 +1,10 @@
 <?php
-if (file_exists(__DIR__.'/fujirou_common.php')) {
-    require(__DIR__.'/fujirou_common.php');
-} else if (file_exists(__DIR__.'/../../include/fujirou_common.php')) {
-    require(__DIR__.'/../../include/fujirou_common.php');
+if (!class_exists('FujirouCommon')) {
+    if (file_exists(__DIR__.'/fujirou_common.php')) {
+        require(__DIR__.'/fujirou_common.php');
+    } else if (file_exists(__DIR__.'/../../include/fujirou_common.php')) {
+        require(__DIR__.'/../../include/fujirou_common.php');
+    }
 }
 
 class FujirouDirectLyrics {
@@ -24,7 +26,7 @@ class FujirouDirectLyrics {
         $count = 0;
 
         $keyword = sprintf("%s %s", $artist, $title);
-        $results = \Fujirou\searchFromGoogle($keyword, $this->siteHost);
+        $results = FujirouCommon::searchFromGoogle($keyword, $this->siteHost);
 
         if (count($results) > 0) {
             if ($this->fillSearchResult($handle, $results[0])) {
@@ -53,16 +55,16 @@ class FujirouDirectLyrics {
             return FALSE;
         }
 
-        $content = \Fujirou\getContent($id);
+        $content = FujirouCommon::getContent($id);
         if (!$content) {
             return FALSE;
         }
 
-        $oneLineContent = \Fujirou\toOneLine($content);
+        $oneLineContent = FujirouCommon::toOneLine($content);
 
         $prefix = '<div id="lyricsContent"><p>';
         $suffix = '</p></div>';
-        $rawLyric = \Fujirou\getSubString($oneLineContent, $prefix, $suffix);
+        $rawLyric = FujirouCommon::getSubString($oneLineContent, $prefix, $suffix);
         if (!$rawLyric) {
             return FALSE;
         }
@@ -122,7 +124,7 @@ class FujirouDirectLyrics {
     function getOgTitle($content) {
         $pattern = '/<meta property="og:title" content="(.+)">/';
 
-        return \Fujirou\getFirstMatch($content, $pattern);
+        return FujirouCommon::getFirstMatch($content, $pattern);
     }
 }
 
