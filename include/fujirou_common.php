@@ -1,10 +1,12 @@
 <?php
 
-namespace Fujirou {
+class FujirouCommon
+{
     /**
      * send request to given url, and return content
      */
-    function getContent($url) {
+    public static function getContent($url)
+    {
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -26,7 +28,8 @@ namespace Fujirou {
     /**
      * Using Google Search API, and return the json of results
      */
-    function searchFromGoogle($keyword, $siteUrl) {
+    public static function searchFromGoogle($keyword, $siteUrl)
+    {
         $googleWebSearchUrl = 'https://ajax.googleapis.com/ajax/services/search/web';
 
         $queryString = sprintf(
@@ -39,7 +42,7 @@ namespace Fujirou {
             $googleWebSearchUrl, urlencode($queryString)
         );
 
-        $content = getContent($searchUrl);
+        $content = self::getContent($searchUrl);
 
         $json = json_decode($content, TRUE);
 
@@ -49,7 +52,8 @@ namespace Fujirou {
     /**
      * given regular expression, return the first matched string
      */
-    function getFirstMatch($string, $pattern) {
+    public static function getFirstMatch($string, $pattern)
+    {
         if (1 === preg_match($pattern, $string, $matches)) {
             return $matches[1];
         }
@@ -60,7 +64,8 @@ namespace Fujirou {
      * given prefix and suffix, return the shortest matched string.
      * returned string including prefix and suffix
      */
-    function getSubString($string, $prefix, $suffix) {
+    public static function getSubString($string, $prefix, $suffix)
+    {
         $start = strpos($string, $prefix);
         if ($start === FALSE) {
             echo "cannot find prefix, string:[$string], prefix[$prefix]\n";
@@ -83,7 +88,8 @@ namespace Fujirou {
     /**
      * remove CR and LF from string
      */
-    function toOneLine($string) {
+    public static function toOneLine($string)
+    {
         return str_replace(array("\n", "\r"), '', $string);
     }
 }
