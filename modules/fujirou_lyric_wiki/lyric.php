@@ -1,4 +1,11 @@
 <?php
+if (!class_exists('FujirouCommon')) {
+    if (file_exists(__DIR__.'/fujirou_common.php')) {
+        require(__DIR__.'/fujirou_common.php');
+    } else if (file_exists(__DIR__.'/../../include/fujirou_common.php')) {
+        require(__DIR__.'/../../include/fujirou_common.php');
+    }
+}
 
 // http://api.wikia.com/wiki/LyricWiki_API
 class FujirouLyricWiki {
@@ -23,7 +30,7 @@ class FujirouLyricWiki {
 			$this->apiUrl, urlencode($artist), urlencode($title)
 		);
 
-		$content = $this->getContent($searchUrl);
+		$content = FujirouCommon::getContent($searchUrl);
 
 		$obj = json_decode($content, TRUE);
 
@@ -47,50 +54,28 @@ class FujirouLyricWiki {
 			return FALSE;
 		}
 
-		$content = $this->getContent($id);
+		$content = FujirouCommon::getContent($id);
 		if (!$content) {
 			return FALSE;
 		}
 
-		$pattern = '/<\/div>(&#.*)<!--/';
-		$matchedString = $this->getFirstMatch($content, $pattern);
+		$prefix = "<div class='lyricbox'>";
+		$suffix = "<!--";
+		$lyricLine = FujirouCommon::getSubString($content, $prefix, $suffix);
+
+		$pattern = '/<\/div>(.*)<!--/';
+		$matchedString = FujirouCommon::getFirstMatch($lyricLine, $pattern);
 		if (!$matchedString) {
 			return FALSE;
 		}
 
 		$lyric = trim(str_replace('<br />', "\n", $matchedString));
-		$lyric = html_entity_decode($lyric, ENT_QUOTES, 'UTF-8');
-		$lyric = trim($lyric);
+		$lyric = FujirouCommon::decodeHTML($lyric);
+		$lyric = trim(strip_tags($lyric));
 
 		$handle->addLyrics($lyric, $id);
 
 		return TRUE;
-	}
-
-	private function getContent($url) {
-		$curl = curl_init();
-
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
-
-		curl_setopt($curl, CURLOPT_VERBOSE, TRUE);
-
-		curl_setopt($curl, CURLOPT_URL, $url);
-
-		$result = curl_exec($curl);
-		curl_close($curl);
-
-		return $result;
-	}
-
-	private function getFirstMatch($string, $pattern) {
-		if (1 === preg_match($pattern, $string, $matches)) {
-			return $matches[1];
-		}
-		return FALSE;
 	}
 
 	private function decodeUTF8($obj) {
@@ -167,8 +152,10 @@ if (!debug_backtrace()) {
 	}
 
 	$module = 'FujirouLyricWiki';
-	$artist = 'Taylor Swift';
-	$title = 'back to december';
+// 	$artist = 'Taylor Swift';
+// 	$title = 'back to december';
+	$artist = 'Eminem';
+	$title = 'Business';
 
 	$refClass = new ReflectionClass($module);
 	$obj = $refClass->newInstance();
