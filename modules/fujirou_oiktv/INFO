@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_oiktv",
+    "displayname": "oiktv.com",
+    "description": "歌詞帝國",
+    "version": "1.0",
+    "site": "http://www.oiktv.com/",
+    "module": "lyric.php",
+    "type": "lyric",
+    "class": "FujirouOiktv"
+}
+
