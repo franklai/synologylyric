@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_metro_lyrics",
+    "displayname": "MetroLyrics",
+    "description": "The World's #1 Source for Lyrics",
+    "version": "1.0",
+    "site": "http://www.metrolyrics.com/",
+    "module": "lyric.php",
+    "type": "lyric",
+    "class": "FujirouMetroLyrics"
+}
+
