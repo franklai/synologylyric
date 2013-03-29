@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_vagalume",
+    "displayname": "Vagalume",
+    "description": "Letras de Músicas e muitas músicas para ouvir!",
+    "version": "1.0",
+    "site": "http://www.vagalume.com.br/",
+    "module": "lyric.php",
+    "type": "lyric",
+    "class": "FujirouVagalume"
+}
+
