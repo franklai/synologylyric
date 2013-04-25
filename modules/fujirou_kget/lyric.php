@@ -8,9 +8,8 @@ if (!class_exists('FujirouCommon')) {
 }
 
 class FujirouKget {
-    private $searchPrefix = 'http://www.kget.jp/result/index.aspx';
-    private $lyricPrefix = 'http://lyric.kget.jp';
-    private $realLyricPrefix = 'http://lyric.kget.jp/iframe/sendlyric.aspx';
+    private $searchPrefix = 'http://www.kget.jp/search/index.php';
+    private $lyricPrefix = 'http://www.kget.jp';
 
     public function __construct() {
     }
@@ -25,14 +24,11 @@ class FujirouKget {
     public function search($handle, $artist, $title) {
         $count = 0;
 
-        $encodedArtist = mb_convert_encoding($artist, 'SJIS', 'UTF-8');
-        $encodedTitle = mb_convert_encoding($title, 'SJIS', 'UTF-8');
-
         // search
-        // http://www.kget.jp/result/index.aspx?c=0&a=perfume&t=%83V%81%5B%83N%83%8C%83b%83g%83V%81%5B%83N%83%8C%83b%83g&b=&f=&x=0&y=0
+        // http://www.kget.jp/search/index.php?c=0&r=%E5%9D%82%E6%9C%AC%E7%9C%9F%E7%B6%BE&t=tune+the+rainbow&v=&f=
         $searchUrl = sprintf(
-            "%s?c=0&a=%s&t=%s",
-            $this->searchPrefix, urlencode($encodedArtist), urlencode($encodedTitle)
+            "%s?c=0&r=%s&t=%s",
+            $this->searchPrefix, urlencode($artist), urlencode($title)
         );
 
         $content = FujirouCommon::getContent($searchUrl);
@@ -54,46 +50,40 @@ class FujirouKget {
     }
 
     private function parseSearchResult($content) {
-        $content = str_replace(array("\n", "\r"), '', $content);
-
-        $content = mb_convert_encoding($content, 'UTF-8', 'SJIS');
-
-        $prefix = '<table class="result"';
-        $suffix = '</table>';
+        $prefix = '<ul class="songlist">';
+        $suffix = '</ul>';
 
         if (strpos($content, $prefix) === FALSE) {
             return FALSE;
         }
-        $resultTable = FujirouCommon::getSubString($content, $prefix, $suffix);
+        $resultList = FujirouCommon::getSubString($content, $prefix, $suffix);
 
-        $resultTable = str_replace('</td></tr></table>', '', $resultTable);
-        $resultItems = explode('</td><td>', $resultTable);
+        $pattern = '/<a class="lyric-anchor" href="([^"]+)">/';
+        $lyricUrl = sprintf(
+            "%s%s",
+            $this->lyricPrefix,
+            FujirouCommon::getFirstMatch($resultList, $pattern)
+        );
 
-        if (count($resultItems) !== 6) {
-            return FALSE;
-        }
+        $pattern = '/<h2 class="title">([^<]+)<\/h2>/';
+        $title = FujirouCommon::getFirstMatch($resultList, $pattern);
 
-        // 1. title
-        // 2. artist
-        // 3. lyricist
-        // 4. composer
-        // 5. partial lyric
-        $pattern = '/<a href="(.*)">.*<\/a>/';
-        $lyricUrl = FujirouCommon::getFirstMatch($resultItems[1], $pattern);
+        $pattern = '/<p class="artist"><a href="[^"]+">([^<]+)<\/a><\/p>/';
+        $artist  = FujirouCommon::getFirstMatch($resultList, $pattern);
 
-        $pattern = '/<a href=".*">(.*)<\/a>/';
-        $title = FujirouCommon::getFirstMatch($resultItems[1], $pattern);
-
-        $pattern = '/<a href=".*">(.*)<\/a>/';
-        $artist = FujirouCommon::getFirstMatch($resultItems[2], $pattern);
-
-        $partial = FujirouCommon::getFirstMatch($resultItems[5], $pattern);
+        $prefix = '<div class="begin"><span>';
+        $suffix = '</div>';
+        $pattern = '/<strong>([^<]+)<\/strong>/';
+        $prefix = FujirouCommon::getFirstMatch(
+            FujirouCommon::getSubString($resultList, $prefix, $suffix),
+            $pattern
+        );
 
         return array(
             'artist' => $artist,
             'title' => $title,
             'id' => $lyricUrl,
-            'partial' => $partial
+            'prefix' => $prefix
         );
     }
 
@@ -111,26 +101,12 @@ class FujirouKget {
             return FALSE;
         }
 
-        $pattern = '/lyric.swf\?sn=([a-zA-Z0-9\/]+)/';
-        $sn = FujirouCommon::getFirstMatch($content, $pattern);
-        if ($sn === FALSE) {
-            return FALSE;
-        }
+        $prefix = '<div id="lyric-trunk">';
+        $suffix = '</div>';
+        $lyric = FujirouCommon::getSubString($content, $prefix, $suffix);
 
-        $lyricUrl = sprintf(
-            "%s?sn=%s",
-            $this->realLyricPrefix,
-            $sn
-        );
-
-        $content = FujirouCommon::getContent($lyricUrl);
-        if (!$content) {
-            return FALSE;
-        }
-
-        $content = mb_convert_encoding($content, 'UTF-8', 'SJIS');
-
-        $lyric = substr($content, strlen('lyric='));
+        $lyric = strip_tags($lyric);
+        $lyric = FujirouCommon::decodeHTML($lyric);
 
         $handle->addLyrics($lyric, $id);
 
