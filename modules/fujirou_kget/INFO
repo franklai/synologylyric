@@ -2,7 +2,7 @@
     "name": "fujirou_kget",
     "displayname": "歌詞GET",
     "description": "www.kget.jp",
-    "version": "1.1",
+    "version": "1.2",
     "site": "http://www.kget.jp/",
     "module": "lyric.php",
     "type": "lyric",
