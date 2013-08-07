@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_lyrics_in_th",
+    "displayname": "lyrics.in.th",
+    "description": "",
+    "version": "1.0",
+    "site": "http://lyrics.in.th/",
+    "module": "lyric.php",
+    "type": "lyric",
+    "class": "FujirouLyricsInTh"
+}
+
