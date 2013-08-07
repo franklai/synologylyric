@@ -11,6 +11,7 @@ class FujirouCommon
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
@@ -80,13 +81,11 @@ class FujirouCommon
     {
         $start = strpos($string, $prefix);
         if ($start === false) {
-            echo "cannot find prefix, string:[$string], prefix[$prefix]\n";
             return $string;
         }
 
         $end = strpos($string, $suffix, $start);
         if ($end === false) {
-            echo "cannot find suffix\n";
             return $string;
         }
 
