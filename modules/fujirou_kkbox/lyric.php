@@ -9,7 +9,7 @@ if (!class_exists('FujirouCommon')) {
 
 class FujirouKkbox
 {
-    private $site = 'http://tw.kkbox.com';
+    private $site = 'http://www.kkbox.com';
 
     public function __construct() {
     }
@@ -27,7 +27,7 @@ class FujirouKkbox
         // http://tw.kkbox.com/search.php?word=%E6%96%B9%E5%A4%A7%E5%90%8C+%E6%84%9B%E6%84%9B%E6%84%9B&search=song&search_lang=
         $keyword = sprintf("%s %s", $artist, $title);
         $searchUrl = sprintf(
-            "%s/search.php?word=%s&search=song&search_lang=",
+            "%s/tw/tc/search.php?word=%s&search=song",
             $this->site, urlencode($keyword)
         );
 
@@ -95,10 +95,10 @@ class FujirouKkbox
             $pattern = '/<td class="song-name"><a href="[^"]+">(.*)<\/a>/U';
             $title = FujirouCommon::getFirstMatch($item, $pattern);
 
-            $pattern = '/<a href="\/artist[^"]+">(.*)<\/a>/U';
+            $pattern = '/<a href="\/tw\/tc\/artist[^"]+">(.*)<\/a>/U';
             $artist = FujirouCommon::getFirstMatch($item, $pattern);
 
-            $pattern = '/<a href="(\/song[^"]+)".*title="歌詞">歌詞<\/a>/';
+            $pattern = '/<a href="(\/tw\/tc\/song[^"]+)".*title="歌詞">/';
             $url = FujirouCommon::getFirstMatch($item, $pattern);
 
             if (!$title || !$artist || !$url) {
@@ -189,4 +189,4 @@ if (!debug_backtrace()) {
     }
 }
 // vim: expandtab ts=4
-?>
+
