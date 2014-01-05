@@ -61,14 +61,13 @@ class FujirouOiktv {
             return FALSE;
         }
 
-        $prefix = '<dd><p>';
-        $suffix = '</p></dd>';
+        $prefix = '<p itemprop="text">';
+        $suffix = '<div style=\'display:none\'>';
 
         $oneLineContent = FujirouCommon::toOneLine($content);
 
         $lyric = FujirouCommon::getSubString($oneLineContent, $prefix, $suffix);
 
-        $lyric = str_replace('</span><p>', "\n\n", $lyric);
         $lyric = str_replace($prefix, '', $lyric);
         $lyric = str_replace($suffix, '', $lyric);
         $lyric = str_replace('<br />', "\n", $lyric);
@@ -87,25 +86,21 @@ class FujirouOiktv {
             return $result;
         }
 
-        $pattern = '/歌名：<a href="[^"]+".*>(.*)<\/a>/';
-        $titleList = FujirouCommon::getAllFirstMatch($content, $pattern);
+        $pattern = '<a href="([^"]+)" class="link_10" title="([^"]+)">';
+        $matches = FujirouCommon::getAllMatches($content, $pattern);
 
-        $pattern = '/歌手：<a href="[^"]+".*>(.*)<\/a>/';
-        $artistList = FujirouCommon::getAllFirstMatch($content, $pattern);
+        $artistTitleList = $matches[2];
+        $urlList = $matches[1];
 
-        $pattern = '/歌名：<a href="([^"]+)".*>.*<\/a>/';
-        $urlList = FujirouCommon::getAllFirstMatch($content, $pattern);
-
-        $count = count($artistList);
-        if ($count != count($titleList) ||
-            $count != count($urlList)) {
+        $count = count($artistTitleList);
+        if ($count != count($urlList)) {
             return $result;
         }
 
         for ($idx = 0; $idx < $count; ++$idx) {
             $item = array(
-                'artist' => $artistList[$idx],
-                'title'  => $titleList[$idx],
+                'artist' => $artistTitleList[$idx],
+                'title'  => $artistTitleList[$idx],
                 'id'     => $urlList[$idx],
                 'partial'=> ''
             );
