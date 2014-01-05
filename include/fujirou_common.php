@@ -74,6 +74,18 @@ class FujirouCommon
     }
 
     /**
+     * given regular expression, return all matched groups
+     */
+    public static function getAllMatches($string, $pattern) {
+        $ret = preg_match_all($pattern, $string, $matches);
+        if ($ret > 0) {
+            return $matches;
+        } else {
+            return $ret;
+        }
+    }
+
+    /**
      * given prefix and suffix, return the shortest matched string.
      * returned string including prefix and suffix
      */
