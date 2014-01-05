@@ -28,7 +28,7 @@ class FujirouMetroLyrics {
 
         // http://www.metrolyrics.com/api/v1/multisearch/all/X-API-KEY/196f657a46afb63ce3fd2015b9ed781280337ea7?find=taylor+swift+love+stor
         $searchUrl = sprintf(
-            "%s/api/v1/multisearch/all/X-API-KEY/%s?find=%s",
+            "%s/api/v1/multisearch/all/X-API-KEY/%s/format/jsonp?callback=cb&find=%s",
             $this->_site, $this->_apiKey, urlencode($keyword)
         );
 
@@ -36,6 +36,19 @@ class FujirouMetroLyrics {
         if (!$content) {
             return $count;
         }
+
+        // remove jsonp callback
+        $pos = strpos($content, '(');
+        if ($pos === false) {
+            return $count;
+        }
+        $content = substr($content, $pos + 1);
+
+        $pos = strrpos($content, ')');
+        if ($pos === false) {
+            return $count;
+        }
+        $content = substr($content, 0, $pos);
 
         $list = $this->parseSearchResult($content);
 
@@ -83,6 +96,10 @@ class FujirouMetroLyrics {
         $result = array();
 
         $json = json_decode($content, TRUE);
+
+        if (!$json) {
+            return $result;
+        }
 
         if (!array_key_exists('results', $json)) {
             return $result;
