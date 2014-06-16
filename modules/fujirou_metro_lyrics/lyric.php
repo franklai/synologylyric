@@ -8,7 +8,8 @@ if (!class_exists('FujirouCommon')) {
 }
 
 class FujirouMetroLyrics {
-    private $_site = 'http://www.metrolyrics.com';
+//    private $_site = 'http://www.metrolyrics.com';
+    private $_site = 'http://api.metrolyrics.com';
     private $_apiKey = '196f657a46afb63ce3fd2015b9ed781280337ea7';
 
     public function __construct() {
@@ -27,28 +28,17 @@ class FujirouMetroLyrics {
         $keyword = sprintf("%s %s", $artist, $title);
 
         // http://www.metrolyrics.com/api/v1/multisearch/all/X-API-KEY/196f657a46afb63ce3fd2015b9ed781280337ea7?find=taylor+swift+love+stor
+        // http://api.metrolyrics.com/v1/
         $searchUrl = sprintf(
-            "%s/api/v1/multisearch/all/X-API-KEY/%s/format/jsonp?callback=cb&find=%s",
-            $this->_site, $this->_apiKey, urlencode($keyword)
+//             "%s/v1/search/artistsong/artist/%s/song/%s/X-API-KEY/%s/format/json",
+            "%s/v1/search/artistsong?artist=%s&song=%s&X-API-KEY=%s&format=json",
+            $this->_site, rawurlencode($artist), rawurlencode($title), $this->_apiKey
         );
 
         $content = FujirouCommon::getContent($searchUrl);
         if (!$content) {
             return $count;
         }
-
-        // remove jsonp callback
-        $pos = strpos($content, '(');
-        if ($pos === false) {
-            return $count;
-        }
-        $content = substr($content, $pos + 1);
-
-        $pos = strrpos($content, ')');
-        if ($pos === false) {
-            return $count;
-        }
-        $content = substr($content, 0, $pos);
 
         $list = $this->parseSearchResult($content);
 
@@ -101,35 +91,17 @@ class FujirouMetroLyrics {
             return $result;
         }
 
-        if (!array_key_exists('results', $json)) {
+        if (!array_key_exists('items', $json) || count($json['items']) <= 0) {
             return $result;
         }
 
-        $lyricsItems = null;
-        foreach ($json['results'] as $tmp) {
-            if (array_key_exists('t', $tmp) && $tmp['t'] === 'Lyrics') {
-                $lyricsItems = $tmp;
-                break;
-            }
-        }
-
-        if (!$lyricsItems || !array_key_exists('d', $lyricsItems)
-            || count($lyricsItems['d']) === 0) {
-            return $result;
-        }
-
-        $firstItem = $lyricsItems['d'][0];
-
-        $artistTitle = explode('<br />', $firstItem['p']);
-        if (count($artistTitle) !== 2) {
-            return $result;
-        }
+        $item = $json['items'][0];
 
         $item = array(
-            'artist' => strip_tags($artistTitle[0]),
-            'title'  => strip_tags($artistTitle[1]),
-            'id'     => $this->_site . '/' . $firstItem['u'],
-            'partial'=> ''
+            'artist' => $item['artist'],
+            'title'  => $item['title'],
+            'id'     => $item['url'],
+            'partial'=> $item['snippet']
         );
 
         array_push($result, $item);
@@ -184,9 +156,9 @@ if (!debug_backtrace()) {
     }
 
     $module = 'FujirouMetroLyrics';
-    $artist = 'Taylor Swift';
+    $artist = 'pitbull';
 //     $title = 'back to december';
-    $title = 'red';
+    $title = 'We Are One (Ole Ola)';
 //     $title = 'red (original demo version)';
 //     $title = 'album red';
 //     $badTitle = 'tailer sfiwt';
