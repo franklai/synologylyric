@@ -63,7 +63,7 @@ class FujirouLyricWiki {
 		$suffix = "<!--";
 		$lyricLine = FujirouCommon::getSubString($content, $prefix, $suffix);
 
-		$pattern = '/<\/div>(.*)<!--/';
+		$pattern = '/<\/script>(.*)<!--/';
 		$matchedString = FujirouCommon::getFirstMatch($lyricLine, $pattern);
 		if (!$matchedString) {
 			return FALSE;
@@ -154,8 +154,10 @@ if (!debug_backtrace()) {
 	$module = 'FujirouLyricWiki';
 // 	$artist = 'Taylor Swift';
 // 	$title = 'back to december';
-	$artist = 'Eminem';
-	$title = 'Business';
+//	$artist = 'Eminem';
+//	$title = 'Business';
+	$artist = 'Taylor Swift';
+	$title = 'Shake it off';
 
 	$refClass = new ReflectionClass($module);
 	$obj = $refClass->newInstance();
