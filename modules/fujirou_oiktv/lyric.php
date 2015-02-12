@@ -27,9 +27,10 @@ class FujirouOiktv {
         // http://lyrics.oiktv.com/search.php?sn=%E7%9B%A7%E5%BB%A3%E4%BB%B2&an=&ln=%E7%84%A1%E6%95%B5%E9%90%B5%E9%87%91%E5%89%9B&lrc=&sx=all
         // http://www.oiktv.com/search.php?sn=taylor+swift+&an=&ln=love+story&lrc=&sx=all&type=1
         // http://www.oiktv.com/search.php?sn=Taylor+Swift&an=&ln=back+to+december&lrc=&sx=m%2Cw%2Cg%2Cj%2Ce%2Ch&type=1
+        // http://www.oiktv.com/search/lyrics/taylor%20swift%20back%20to%20december
         $searchUrl = sprintf(
-            "%s/search.php?sn=%s&ln=%s&sx=all&type=1&an=&lrc=",
-            $this->site, urlencode($artist), urlencode($title)
+            "%s/search/lyrics/%s",
+            $this->site, urlencode("$artist $title")
         );
 
         $content = FujirouCommon::getContent($searchUrl);
@@ -61,16 +62,24 @@ class FujirouOiktv {
             return FALSE;
         }
 
-        $prefix = '<p itemprop="text">';
-        $suffix = '<div style=\'display:none\'>';
+//         $prefix = '<p class="col-sm-12"';
+        $prefix = '</span><br />';
+        $suffix = '</p>';
 
-        $oneLineContent = FujirouCommon::toOneLine($content);
+//         $oneLineContent = FujirouCommon::toOneLine($content);
 
-        $lyric = FujirouCommon::getSubString($oneLineContent, $prefix, $suffix);
+        $lyric = FujirouCommon::getSubString($content, $prefix, $suffix);
 
         $lyric = str_replace($prefix, '', $lyric);
         $lyric = str_replace($suffix, '', $lyric);
-        $lyric = str_replace('<br />', "\n", $lyric);
+        $lyric = str_replace('<br />', '', $lyric);
+
+        // remove ad line
+        $prefix = '~查詢更多歌詞';
+        $suffix = '</a>~';
+        $more_lyric_ad = FujirouCommon::getSubString($lyric, $prefix, $suffix);
+
+        $lyric = str_replace($more_lyric_ad, '', $lyric);
 
         $lyric = trim(strip_tags($lyric));
 
@@ -82,26 +91,30 @@ class FujirouOiktv {
     private function parseSearchResult($content) {
         $result = array();
 
-        if (FALSE === strpos($content, '/lyric-')) {
+        if (FALSE === strpos($content, '<article class="thumb cat-sports">')) {
             return $result;
         }
 
-        $pattern = '<a href="([^"]+)" class="link_10" title="([^"]+)">';
-        $matches = FujirouCommon::getAllMatches($content, $pattern);
+        $oneLineContent = FujirouCommon::toOneLine($content);
 
-        $artistTitleList = $matches[2];
-        $urlList = $matches[1];
+        $pattern = '/<article class="thumb cat-sports">.*?<a href="([^"]+)".*?>([^<]+).*?\[([^\]]+)\].*?<\/article>/';
 
-        $count = count($artistTitleList);
-        if ($count != count($urlList)) {
+        $matches = FujirouCommon::getAllMatches($oneLineContent, $pattern);
+
+        $listUrl = $matches[1];
+        $listTitle = $matches[2];
+        $listArtist = $matches[3];
+
+        $count = count($listUrl);
+        if ($count != count($listTitle) || $count != count($listArtist)) {
             return $result;
         }
 
         for ($idx = 0; $idx < $count; ++$idx) {
             $item = array(
-                'artist' => $artistTitleList[$idx],
-                'title'  => $artistTitleList[$idx],
-                'id'     => $urlList[$idx],
+                'artist' => $listArtist[$idx],
+                'title'  => $listTitle[$idx],
+                'id'     => $listUrl[$idx],
                 'partial'=> ''
             );
 
@@ -166,19 +179,27 @@ if (!debug_backtrace()) {
 
     $refClass = new ReflectionClass($module);
     $obj = $refClass->newInstance();
-    
     $testObj = new TestObj();
-    $count = $obj->search($testObj, $artist, $title);
 
-    if ($count > 0) {
-        $item = $testObj->getFirstItem();
+//     $id = 'http://www.oiktv.com/lyrics/lyric-1084830.html'; // B'z
 
-        if (array_key_exists('id', $item)) {
-            $obj->get($testObj, $item['id']);
-        } else {
-            echo "\nno id to query lyric\n";
+    if ($argc < 2) {
+        $count = $obj->search($testObj, $artist, $title);
+
+        if ($count > 0) {
+            $item = $testObj->getFirstItem();
+            if (array_key_exists('id', $item)) {
+                $id = $item['id'];
+            } else {
+                echo "\nno id to query lyric\n";
+                exit;
+            }
         }
+    } else {
+        $id = $argv[1];
     }
+
+    $obj->get($testObj, $id);
 }
 // vim: expandtab ts=4
 ?>
