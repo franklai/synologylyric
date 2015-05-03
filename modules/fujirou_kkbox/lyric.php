@@ -25,6 +25,7 @@ class FujirouKkbox
         $count = 0;
 
         // http://tw.kkbox.com/search.php?word=%E6%96%B9%E5%A4%A7%E5%90%8C+%E6%84%9B%E6%84%9B%E6%84%9B&search=song&search_lang=
+        // http://www.kkbox.com/tw/tc/search.php?search=mix&word=%E5%AE%89%E5%A6%AE%E6%9C%B5%E6%8B%89%20%E6%B0%B8%E7%84%A1%E5%B3%B6
         $keyword = sprintf("%s %s", $artist, $title);
         $searchUrl = sprintf(
             "%s/tw/tc/search.php?word=%s&search=song",
@@ -92,10 +93,10 @@ class FujirouKkbox
 
         $items = explode('</tr>', $searchResult);
         foreach ($items as $item) {
-            $pattern = '/<td class="song-name"><a href="[^"]+">(.*)<\/a>/U';
+            $pattern = '/<td class="song-name"><a href="[^"]+"[^>]*>(.*)<\/a>/U';
             $title = FujirouCommon::getFirstMatch($item, $pattern);
 
-            $pattern = '/<a href="\/tw\/tc\/artist[^"]+">(.*)<\/a>/U';
+            $pattern = '/<a href="\/tw\/tc\/artist[^"]+"[^>]*>(.*)<\/a>/U';
             $artist = FujirouCommon::getFirstMatch($item, $pattern);
 
             $pattern = '/<a href="(\/tw\/tc\/song[^"]+)".*title="歌詞">/';
@@ -165,8 +166,10 @@ if (!debug_backtrace()) {
     }
 
     $module = 'FujirouKkbox';
-    $artist = '盧廣仲';
-    $title = '無敵';
+//     $artist = '盧廣仲';
+//     $title = '無敵';
+    $artist = '安妮朵拉';
+    $title = '永無島';
 
     $refClass = new ReflectionClass($module);
     $obj = $refClass->newInstance();
