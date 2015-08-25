@@ -60,7 +60,7 @@ class FujirouKkbox
             return FALSE;
         }
 
-        $prefix = '<div class="content">';
+        $prefix = '<div class="lyrics col-md-12">';
         $suffix = '</div>';
 
         $oneLineContent = FujirouCommon::toOneLine($content);
@@ -68,10 +68,10 @@ class FujirouKkbox
         $lyric = FujirouCommon::getSubString($oneLineContent, $prefix, $suffix);
 
         $lyric = str_replace('<br />', "\n", $lyric);
-        $lyric = str_replace('<br>', "\n\n", $lyric);
 
         $lyric = trim(strip_tags($lyric));
         $lyric = FujirouCommon::decodeHTML($lyric);
+        $lyric = str_replace('                            ', "\n", $lyric);
 
         $handle->addLyrics($lyric, $id);
 

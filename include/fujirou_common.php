@@ -113,7 +113,8 @@ class FujirouCommon
      */
     public static function toOneLine($string)
     {
-        return str_replace(array("\n", "\r"), '', $string);
+        $string = str_replace(array("\n", "\r"), '', $string);
+        return preg_replace('/>\s+</', '><', $string);
     }
 
     /**
