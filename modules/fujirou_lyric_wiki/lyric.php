@@ -26,7 +26,7 @@ class FujirouLyricWiki {
 		$count = 0;
 
 		$searchUrl = sprintf(
-			"%s?artist=%s&song=%s&fmt=realjson",
+			"%s?func=getSong&artist=%s&song=%s&fmt=realjson",
 			$this->apiUrl, urlencode($artist), urlencode($title)
 		);
 
