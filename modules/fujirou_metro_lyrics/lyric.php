@@ -8,8 +8,8 @@ if (!class_exists('FujirouCommon')) {
 }
 
 class FujirouMetroLyrics {
-//    private $_site = 'http://www.metrolyrics.com';
-    private $_site = 'http://api.metrolyrics.com';
+    private $_site = 'http://www.metrolyrics.com';
+    private $_apiSite = 'http://api.metrolyrics.com';
     private $_apiKey = '196f657a46afb63ce3fd2015b9ed781280337ea7';
 
     public function __construct() {
@@ -28,11 +28,14 @@ class FujirouMetroLyrics {
         $keyword = sprintf("%s %s", $artist, $title);
 
         // http://www.metrolyrics.com/api/v1/multisearch/all/X-API-KEY/196f657a46afb63ce3fd2015b9ed781280337ea7?find=taylor+swift+love+stor
+        // http://api.metrolyrics.com/v1//multisearch/all/X-API-KEY/196f657a46afb63ce3fd2015b9ed781280337ea7/format/json?find=taylor+swift+fifteen&theme=desktop
         // http://api.metrolyrics.com/v1/
         $searchUrl = sprintf(
 //             "%s/v1/search/artistsong/artist/%s/song/%s/X-API-KEY/%s/format/json",
-            "%s/v1/search/artistsong?artist=%s&song=%s&X-API-KEY=%s&format=json",
-            $this->_site, rawurlencode($artist), rawurlencode($title), $this->_apiKey
+//             "%s/v1/search/artistsong?artist=%s&song=%s&X-API-KEY=%s&format=json",
+            "%s/v1//multisearch/all/X-API-KEY/%s/format/json?find=%s",
+            $this->_apiSite, $this->_apiKey, rawurlencode(sprintf('%s %s', $artist, $title))
+//             $this->_site, rawurlencode($artist), rawurlencode($title), $this->_apiKey
         );
 
         $content = FujirouCommon::getContent($searchUrl);
@@ -70,6 +73,7 @@ class FujirouMetroLyrics {
         $lyric = FujirouCommon::getSubString($content, $prefix, $suffix);
 
         $lyric = str_replace('<br />', "\n", $lyric);
+        $lyric = str_replace("<p class='verse'>", "\n\n", $lyric);
         $lyric = trim(strip_tags($lyric));
         $lyric = FujirouCommon::decodeHTML($lyric);
 
@@ -86,22 +90,35 @@ class FujirouMetroLyrics {
         $result = array();
 
         $json = json_decode($content, TRUE);
+        echo $content;
 
         if (!$json) {
             return $result;
         }
 
-        if (!array_key_exists('items', $json) || count($json['items']) <= 0) {
+        if (!array_key_exists('results', $json) || count($json['results']) <= 0) {
+            return $result;
+        }
+        if (!array_key_exists('songs', $json['results']) || count($json['results']['songs']) <= 0) {
             return $result;
         }
 
-        $item = $json['items'][0];
+        $songs = $json['results']['songs'];
+        if (!array_key_exists('d', $songs) || count($songs['d']) <= 0) {
+            return $result;
+        }
+
+        $item = $songs['d'][0];
+
+        $infos = explode('<br />', $item['p']);
+        $title = strip_tags($infos[0]);
+        $artist = strip_tags($infos[1]);
 
         $item = array(
-            'artist' => $item['artist'],
-            'title'  => $item['title'],
-            'id'     => $item['url'],
-            'partial'=> $item['snippet']
+            'artist' => $artist,
+            'title'  => $title,
+            'id'     => sprintf("%s/%s", $this->_site, $item['u']),
+            'partial'=> ''
         );
 
         array_push($result, $item);
