@@ -90,7 +90,6 @@ class FujirouMetroLyrics {
         $result = array();
 
         $json = json_decode($content, TRUE);
-        echo $content;
 
         if (!$json) {
             return $result;
