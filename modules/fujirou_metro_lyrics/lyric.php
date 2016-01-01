@@ -67,7 +67,7 @@ class FujirouMetroLyrics {
             return FALSE;
         }
 
-        $prefix = '<div id="lyrics-body">';
+        $prefix = '<div class="lyrics-body">';
         $suffix = '</div>';
 
         $lyric = FujirouCommon::getSubString($content, $prefix, $suffix);
@@ -172,12 +172,15 @@ if (!debug_backtrace()) {
     }
 
     $module = 'FujirouMetroLyrics';
-    $artist = 'pitbull';
-//     $title = 'back to december';
-    $title = 'We Are One (Ole Ola)';
+//     $artist = 'pitbull';
+//     $title = 'We Are One (Ole Ola)';
 //     $title = 'red (original demo version)';
 //     $title = 'album red';
-//     $badTitle = 'tailer sfiwt';
+//     $artist = 'taylor swift';
+//     $title = 'style';
+
+    $artist = 'Usher';
+    $title = 'Lovers & Friends';
 
 
     $refClass = new ReflectionClass($module);
