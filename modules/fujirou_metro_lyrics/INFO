@@ -2,7 +2,7 @@
     "name": "fujirou_metro_lyrics",
     "displayname": "MetroLyrics",
     "description": "The World's #1 Source for Lyrics",
-    "version": "1.3",
+    "version": "1.4",
     "site": "http://www.metrolyrics.com/",
     "module": "lyric.php",
     "type": "lyric",
