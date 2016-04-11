@@ -2,7 +2,7 @@
     "name": "fujirou_lyric_wiki",
     "displayname": "LyricWiki Complete",
     "description": "read complete lyric of lyrics.wikia.com",
-    "version": "1.3",
+    "version": "1.4",
     "site": "http://lyrics.wikia.com/",
     "module": "lyric.php",
     "type": "lyric",
