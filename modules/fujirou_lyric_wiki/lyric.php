@@ -63,7 +63,7 @@ class FujirouLyricWiki {
 		$suffix = "<!--";
 		$lyricLine = FujirouCommon::getSubString($content, $prefix, $suffix);
 
-		$pattern = '/<\/script>(.*)<!--/';
+		$pattern = '/>(.*)<!--/';
 		$matchedString = FujirouCommon::getFirstMatch($lyricLine, $pattern);
 		if (!$matchedString) {
 			return FALSE;
