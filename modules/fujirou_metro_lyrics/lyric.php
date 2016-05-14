@@ -59,18 +59,46 @@ class FujirouMetroLyrics {
         return count($list);
     }
 
+    private function remove_noise($lyric) {
+        $items = array(
+            array(
+                'prefix' => '<div id="mid-song-discussion"',
+                'suffix' => "<span class=\"label\">See all</span>\n</a>\n</div>"
+            ),
+            array(
+                'prefix' => '<p class="writers">',
+                'suffix' => '</sd-lyricbody>'
+            )
+        );
+
+        foreach ($items as $item) {
+            $prefix = $item['prefix'];
+            $suffix = $item['suffix'];
+            $noise = FujirouCommon::getSubString($lyric, $prefix, $suffix);
+            if ($noise !== $lyric) {
+                $lyric = str_replace($noise, '', $lyric);
+            }
+        }
+
+        return $lyric;
+    }
+
     public function get($handle, $id) {
         $lyric = '';
 
         $content = FujirouCommon::getContent($id);
         if (!$content) {
-            return FALSE;
+            return false;
         }
 
-        $prefix = '<div class="lyrics-body">';
-        $suffix = '</div>';
+        $prefix = '<sd-lyricbody id="lyrics-body">';
+        $suffix = '</sd-lyricbody>';
 
         $lyric = FujirouCommon::getSubString($content, $prefix, $suffix);
+        if (!$lyric) {
+            return false;
+        }
+        $lyric = $this->remove_noise($lyric);
 
         $lyric = str_replace('<br />', "\n", $lyric);
         $lyric = str_replace("<p class='verse'>", "\n\n", $lyric);
@@ -166,7 +194,7 @@ if (!debug_backtrace()) {
             if (count($this->items) > 0) {
                 return $this->items[0];
             } else {
-                return FALSE;
+                return false;
             }
         }
     }
@@ -176,11 +204,13 @@ if (!debug_backtrace()) {
 //     $title = 'We Are One (Ole Ola)';
 //     $title = 'red (original demo version)';
 //     $title = 'album red';
-//     $artist = 'taylor swift';
-//     $title = 'style';
 
-    $artist = 'Usher';
-    $title = 'Lovers & Friends';
+//     $artist = 'Usher';
+//     $title = 'Lovers & Friends';
+    $artist = 'taylor swift';
+    $title = 'style';
+//     $artist = 'rihanna';
+//     $title = 'work';
 
 
     $refClass = new ReflectionClass($module);
