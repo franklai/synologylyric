@@ -1,8 +1,8 @@
 {
     "name": "fujirou_metro_lyrics",
     "displayname": "MetroLyrics",
-    "description": "The World's #1 Source for Lyrics",
-    "version": "1.4",
+    "description": "Use MetroLyrics to find your favorite song lyrics",
+    "version": "1.5",
     "site": "http://www.metrolyrics.com/",
     "module": "lyric.php",
     "type": "lyric",
