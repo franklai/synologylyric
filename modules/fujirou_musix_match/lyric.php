@@ -23,15 +23,11 @@ class FujirouMusixMatch{
     public function search($handle, $artist, $title) {
         $count = 0;
 
-        // https://www.musixmatch.com/ws/1.1/macro.search?format=json&q=linkin%20park&page_size=4
-        $other_params = array(
-            'track_fields_set=community_track_search',
-            'artist_fields_set=community_artist_search',
-            'app_id=community-app-v1.0'
-        );
+        // <del> https://www.musixmatch.com/ws/1.1/macro.search?format=json&q=linkin%20park&page_size=4 </del>
+        // https://www.musixmatch.com/search/december%20%20taylor%20swift/tracks
         $searchUrl = sprintf(
-            "%s/ws/1.1/macro.search?format=json&q=%s&page_size=4&%s",
-            $this->_site, rawurlencode(sprintf('%s %s', $title, $artist)), implode('&', $other_params)
+            "%s/search/%s/tracks",
+            $this->_site, rawurlencode(sprintf('%s %s', $title, $artist))
         );
 
         $content = FujirouCommon::getContent($searchUrl);
@@ -58,7 +54,7 @@ class FujirouMusixMatch{
     public function get($handle, $id) {
         $lyric = '';
 
-        $url = sprintf("%s/lyrics/%s", $this->_site, rawurlencode($id));
+        $url = sprintf("%s%s", $this->_site, $id);
 
         $content = FujirouCommon::getContent($url);
         if (!$content) {
@@ -104,31 +100,35 @@ class FujirouMusixMatch{
     private function parseSearchResult($content) {
         $result = array();
 
-        $json = json_decode($content, TRUE);
+		$prefix = '<a class="title" ';
+		$suffix = '</div></li>';
+		$block = FujirouCommon::getSubString($content, $prefix, $suffix);
 
-        if (!$json) {
-            return $result;
-        }
+		$pattern = '/<a class="title" .*?><span.*?>(.*?)<\/span><\/a>/';
+		$value = FujirouCommon::getFirstMatch($block, $pattern);
+		if (!$value) {
+			return $result;
+		}
+        $title = FujirouCommon::decodeHTML($value);
 
-        if (!isset($json['message']['body']['macro_result_list']['track_list'])) {
-            return $result;
-        }
+        $pattern = '/<a class="artist".*?>(.*?)<\/a>/';
+		$value = FujirouCommon::getFirstMatch($block, $pattern);
+		if (!$value) {
+			return $result;
+		}
+        $artist = FujirouCommon::decodeHTML($value);
 
-        $tracks = $json['message']['body']['macro_result_list']['track_list'];
-        if (count($tracks) === 0) {
-            return $result;
-        }
-
-        $item = $tracks[0]['track'];
-
-        $title = $item['track_name'];
-        $artist = $item['artist_name'];
-        $vanity_id = $item['commontrack_vanity_id'];
+        $pattern = '/<a class="title" href="(.+?)".*?><span.*?>.*?<\/span><\/a>/';
+        $value = FujirouCommon::getFirstMatch($block, $pattern);
+		if (!$value) {
+			return $result;
+		}
+        $id = $value;
 
         $item = array(
             'artist' => $artist,
             'title'  => $title,
-            'id'     => $vanity_id,
+            'id'     => $id,
             'partial'=> ''
         );
 
@@ -195,13 +195,17 @@ if (!debug_backtrace()) {
 //     $title = 'style';
 //     $artist = 'rihanna';
 //     $title = 'work';
-    $artist = 'CHiCo with HoneyWorks';
-    $title = 'プライド革命';
+//    $artist = 'CHiCo with HoneyWorks';
+//    $title = 'プライド革命';
+    $artist = 'Cheat Codes & Dante Klein';
+    $title = 'Let Me Hold You (Turn Me On)';
 
 
     $refClass = new ReflectionClass($module);
     $obj = $refClass->newInstance();
     
+    printf("Search title [$title], artist [$artist]\n");
+
     $testObj = new TestObj();
     $count = $obj->search($testObj, $artist, $title);
 
