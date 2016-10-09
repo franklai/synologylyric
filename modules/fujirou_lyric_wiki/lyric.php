@@ -32,7 +32,7 @@ class FujirouLyricWiki {
 
 		$content = FujirouCommon::getContent($searchUrl);
 
-		$obj = json_decode($content, TRUE);
+		$obj = json_decode($content, true);
 
 		if ($obj['lyrics'] !== 'Not found') {
 			$obj = $this->decodeUTF8($obj);
@@ -50,32 +50,51 @@ class FujirouLyricWiki {
 		$lyric = '';
 
 		// id should be url of lyric
-		if (strchr($id, $this->sitePrefix) === FALSE) {
-			return FALSE;
+		if (strchr($id, $this->sitePrefix) === false) {
+			return false;
 		}
 
 		$content = FujirouCommon::getContent($id);
 		if (!$content) {
-			return FALSE;
+			return false;
 		}
 
 		$prefix = "<div class='lyricbox'>";
-		$suffix = "<!--";
+		$suffix = "<div class='lyricsbreak'>";
 		$lyricLine = FujirouCommon::getSubString($content, $prefix, $suffix);
 
-		$pattern = '/>(.*)<!--/';
+		$pattern = "/'>(.*)<div class='lyricsbreak'/";
 		$matchedString = FujirouCommon::getFirstMatch($lyricLine, $pattern);
 		if (!$matchedString) {
-			return FALSE;
+			return false;
 		}
 
-		$lyric = trim(str_replace('<br />', "\n", $matchedString));
-		$lyric = FujirouCommon::decodeHTML($lyric);
-		$lyric = trim(strip_tags($lyric));
+		$body = trim(str_replace('<br />', "\n", $matchedString));
+		$body = FujirouCommon::decodeHTML($body);
+		$body = trim(strip_tags($body));
+
+		$pattern = '/<meta property="og:title" content="(.*)" \/>/';
+		$matchedString = FujirouCommon::getFirstMatch($content, $pattern);
+		if (!$matchedString) {
+			return false;
+		}
+		$items = explode(':', $matchedString, 2);
+		if (!$items || count($items) < 2) {
+			return false;
+		}
+		$artist = $items[0];
+		$title = $items[1];
+
+		$lyric = sprintf(
+			"%s\n\n%s\n\n\n%s",
+			'lyric from lyrics.wikia.com',
+			"$artist - $title",
+			$body
+		);
 
 		$handle->addLyrics($lyric, $id);
 
-		return TRUE;
+		return true;
 	}
 
 	private function decodeUTF8($obj) {
@@ -146,7 +165,7 @@ if (!debug_backtrace()) {
 			if (count($this->items) > 0) {
 				return $this->items[0];
 			} else {
-				return FALSE;
+				return false;
 			}
 		}
 	}
@@ -154,10 +173,12 @@ if (!debug_backtrace()) {
 	$module = 'FujirouLyricWiki';
 // 	$artist = 'Taylor Swift';
 // 	$title = 'back to december';
-//	$artist = 'Eminem';
-//	$title = 'Business';
-	$artist = 'Taylor Swift';
-	$title = 'Shake it off';
+// 	$artist = 'Eminem';
+// 	$title = 'Business';
+// 	$artist = 'Taylor Swift';
+// 	$title = 'Shake it off';
+	$artist = 'Beyoncé';
+	$title = 'Hold Up';
 
 	$refClass = new ReflectionClass($module);
 	$obj = $refClass->newInstance();
@@ -177,6 +198,3 @@ if (!debug_backtrace()) {
 		echo "\nempty result\n";
 	}
 }
-
-?>
-
