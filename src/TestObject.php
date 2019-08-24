@@ -12,14 +12,6 @@ class TestObject
     public function addLyrics($lyric, $id)
     {
         $this->lyric = $lyric;
-        /*
-        printf("\n");
-        printf("song id: %s\n", $id);
-        printf("\n");
-        printf("== lyric ==\n");
-        printf("%s\n", $lyric);
-        printf("** END of lyric **\n\n");
-        */
     }
 
     public function addTrackInfoToList($artist, $title, $id, $prefix)

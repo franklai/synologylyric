@@ -3,9 +3,9 @@ declare (strict_types = 1);
 
 require_once 'LyricsTestCase.php';
 
-final class FujirouMetroLyricsTest extends LyricsTestCase
+final class FujirouLyricWikiTest extends LyricsTestCase
 {
-    protected $module = 'FujirouMetroLyrics';
+    protected $module = 'FujirouLyricWiki';
 
     public function testSearch()
     {
@@ -14,7 +14,7 @@ final class FujirouMetroLyricsTest extends LyricsTestCase
         $answer = array(
             'artist' => 'Taylor Swift',
             'title'  => 'Style',
-            'id'     => 'http://www.metrolyrics.com/style-lyrics-taylor-swift.html'
+            'id'     => 'http://lyrics.wikia.com/Taylor_Swift:Style'
         );
 
         $this->search($artist, $title, $answer);
@@ -22,8 +22,8 @@ final class FujirouMetroLyricsTest extends LyricsTestCase
 
     public function testGet()
     {
-        $id = 'http://www.metrolyrics.com/style-lyrics-taylor-swift.html';
-        $path = 'FujirouMetroLyrics.taylor_swift.style.txt';
+        $id = 'http://lyrics.wikia.com/Taylor_Swift:Style';
+        $path = 'FujirouLyricWiki.taylor_swift.style.txt';
 
         $this->get($id, $path);
     }
