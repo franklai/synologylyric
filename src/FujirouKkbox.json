@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_kkbox",
+    "displayname": "kkbox.com",
+    "description": "KKBOX",
+    "version": "1.4",
+    "site": "https://kkbox.com/",
+    "module": "FujirouKkbox.php",
+    "type": "lyric",
+    "class": "FujirouKkbox"
+}
+
