@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ac69bab358a14faafdf4864a1b16e05",
+    "content-hash": "e44242f5a449f5a7dea36039ff41055a",
     "packages": [],
     "packages-dev": [
         {
@@ -540,6 +540,56 @@
                 "iterator"
             ],
             "time": "2018-09-13T20:33:42+00:00"
+        },
+        {
+            "name": "phpunit/php-invoker",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-invoker.git",
+                "reference": "4a01883f660b10d4a19a14de5efd19b22eac2d93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-invoker/zipball/4a01883f660b10d4a19a14de5efd19b22eac2d93",
+                "reference": "4a01883f660b10d4a19a14de5efd19b22eac2d93",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcntl": "*",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Invoke callables with a timeout",
+            "homepage": "https://github.com/sebastianbergmann/php-invoker/",
+            "keywords": [
+                "process"
+            ],
+            "time": "2018-01-27T06:52:17+00:00"
         },
         {
             "name": "phpunit/php-text-template",
