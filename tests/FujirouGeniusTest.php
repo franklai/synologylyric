@@ -27,4 +27,17 @@ final class FujirouGeniusTest extends LyricsTestCase
 
         $this->get($id, $path);
     }
+
+    public function testSearchJapanese()
+    {
+        $artist = 'RADWIMPS';
+        $title = 'スパークル (Movie Ver.)';
+        $answer = array(
+            'artist' => 'RADWIMPS',
+            'title'  => 'スパークル (Sparkle) [Movie Version]',
+            'id'     => 'https://genius.com/Radwimps-sparkle-movie-version-lyrics'
+        );
+
+        $this->search($artist, $title, $answer);
+    }
 }

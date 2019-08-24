@@ -33,25 +33,36 @@ class FujirouGenius
         $sections = $obj['response']['sections'];
 
         $song_section = null;
+        $top_hit_section = null;
         foreach ($sections as $section) {
-          if ($section['type'] === 'song') {
-            $song_section = $section;
-            break;
-          }
+            if ($section['type'] === 'top_hit') {
+                $top_hit_section = $section;
+            }
+            if ($section['type'] === 'song') {
+                $song_section = $section;
+                break;
+            }
         }
 
         if (!$song_section) {
             return $count;
         }
+        $results = [];
 
         foreach ($song_section['hits'] as $hit) {
-          $result = $hit['result'];
+            array_push($results, $hit['result']);
+        }
 
-          $artist = $result['primary_artist']['name'];
-          $title = $result['title'];
-          $id = $result['url'];
+        if ($top_hit_section && count($results) === 0) {
+            array_push($results, $top_hit_section['hits'][0]['result']);
+        }
 
-          $handle->addTrackInfoToList($artist, $title, $id, '');
+        foreach ($results as $result) {
+            $artist = $result['primary_artist']['name'];
+            $title = $result['title'];
+            $id = $result['url'];
+
+            $handle->addTrackInfoToList($artist, $title, $id, '');
         }
 
         return $count;
