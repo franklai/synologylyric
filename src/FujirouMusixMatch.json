@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_musix_match",
+    "displayname": "MusixMatch",
+    "description": "The world's largest lyrics catalog",
+    "version": "1.3",
+    "site": "https://www.musixmatch.com/",
+    "module": "FujirouMusixMatch.php",
+    "type": "lyric",
+    "class": "FujirouMusixMatch"
+}
+
