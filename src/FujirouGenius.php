@@ -20,12 +20,20 @@ class FujirouGenius
         return $this->get($info, $id);
     }
 
+    private function getQuery($artist, $title)
+    {
+      $special_chars = ["(", ")"];
+      $stripped_artist = str_replace($special_chars, "", $artist);
+      $stripped_title = str_replace($special_chars, "", $title);
+      return urlencode("$stripped_artist $stripped_title");
+    }
+
     public function search($handle, $artist, $title)
     {
         $count = 0;
 
         $url = $this->apiUrl;
-        $query = urlencode("$artist $title");
+        $query = $this->getQuery($artist, $title);
         $search_url = "$url?q=$query";
 
         $content = FujirouCommon::getContent($search_url);
@@ -54,7 +62,9 @@ class FujirouGenius
         }
 
         if ($top_hit_section && count($results) === 0) {
-            array_push($results, $top_hit_section['hits'][0]['result']);
+            if (count($top_hit_section['hits']) > 0) {
+                array_push($results, $top_hit_section['hits'][0]['result']);
+            }
         }
 
         foreach ($results as $result) {
@@ -63,6 +73,7 @@ class FujirouGenius
             $id = $result['url'];
 
             $handle->addTrackInfoToList($artist, $title, $id, '');
+            $count += 1;
         }
 
         return $count;
