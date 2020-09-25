@@ -7,6 +7,7 @@ From https://bitbucket.org/franklai/synologylyric/, which is Mercurial repositor
 
 ## Supported Sites
 * [musixmatch](https://www.musixmatch.com/)
+* [kkbox](https://www.kkbox.com/)
 
 ## Links
 Synology Audio Station Lyrics Module Development Guide
