@@ -20,8 +20,7 @@ class FujirouKkbox
     public function search($handle, $artist, $title) {
         $count = 0;
 
-        // http://tw.kkbox.com/search.php?word=%E6%96%B9%E5%A4%A7%E5%90%8C+%E6%84%9B%E6%84%9B%E6%84%9B&search=song&search_lang=
-        // http://www.kkbox.com/tw/tc/search.php?search=mix&word=%E5%AE%89%E5%A6%AE%E6%9C%B5%E6%8B%89%20%E6%B0%B8%E7%84%A1%E5%B3%B6
+        // https://www.kkbox.com/tw/tc/search.php?word=%E8%8C%84%E5%AD%90%E8%9B%8B+%E6%B5%AA%E6%B5%81%E9%80%A3
         $keyword = sprintf("%s %s", $artist, $title);
         $searchUrl = sprintf(
             "%s/tw/tc/search.php?word=%s&search=song",
@@ -53,14 +52,25 @@ class FujirouKkbox
 
         $content = FujirouCommon::getContent($id);
         if (!$content) {
-            return FALSE;
+            return false;
         }
 
-        $prefix = "<script type='application/ld+json'>";
+        $prefix = '<script type="application/ld+json">';
         $suffix = '</script>';
 
         $ld_json_text = FujirouCommon::getSubString($content, $prefix, $suffix);
         $ld_json = json_decode(strip_tags($ld_json_text), true);
+
+        if (!array_key_exists('name', $ld_json)) {
+            $pos_first = strpos($content, $prefix);
+            $pos_second = strpos($content, $prefix, $pos_first + 1);
+            if ($pos_second === false) {
+                return false;
+            }
+
+            $ld_json_text = FujirouCommon::getSubString(substr($content, $pos_second), $prefix, $suffix);
+            $ld_json = json_decode(strip_tags($ld_json_text), true);
+        }
 
         $title = $ld_json['name'];
         $artist = $ld_json['byArtist']['name'];
