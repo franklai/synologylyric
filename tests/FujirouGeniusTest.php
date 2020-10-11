@@ -30,12 +30,12 @@ final class FujirouGeniusTest extends LyricsTestCase
 
     public function testSearchJapanese()
     {
-        $artist = 'RADWIMPS';
-        $title = 'スパークル (Movie Ver.)';
+        $artist = 'Aimer';
+        $title = '夜行列車';
         $answer = array(
-            'artist' => 'RADWIMPS',
-            'title'  => 'スパークル (Sparkle) [Movie Version]',
-            'id'     => 'https://genius.com/Radwimps-sparkle-movie-version-lyrics'
+            'artist' => 'Aimer',
+            'title'  => 'Yakou Ressha (夜行列車) ~nothing to lose~',
+            'id'     => 'https://genius.com/Aimer-yakou-ressha-nothing-to-lose-lyrics'
         );
 
         $this->search($artist, $title, $answer);

@@ -12,7 +12,7 @@ class FujirouCommon
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
-        curl_setopt($curl, CURLOPT_USERAGENT, 'LyricGet/3.14');
+        curl_setopt($curl, CURLOPT_USERAGENT, 'LyricGet/3.1416');
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
