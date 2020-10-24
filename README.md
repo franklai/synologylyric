@@ -6,8 +6,9 @@ Collection of Synology Audio Station Lyrics Module
 From https://bitbucket.org/franklai/synologylyric/, which is Mercurial repository BitBucket disabled.
 
 ## Supported Sites
-* [musixmatch](https://www.musixmatch.com/)
+* [genius](https://genius.com/)
 * [kkbox](https://www.kkbox.com/)
+* [musixmatch](https://www.musixmatch.com/)
 
 ## Links
 Synology Audio Station Lyrics Module Development Guide
