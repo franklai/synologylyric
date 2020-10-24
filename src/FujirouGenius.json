@@ -2,7 +2,7 @@
     "name": "fujirou_genius",
     "displayname": "Genius",
     "description": "search lyrics from genius.com",
-    "version": "1.0",
+    "version": "1.1",
     "site": "https://genius.com/",
     "module": "FujirouGenius.php",
     "type": "lyric",
