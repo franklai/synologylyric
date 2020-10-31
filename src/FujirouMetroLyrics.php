@@ -5,8 +5,8 @@ spl_autoload_register(function ($class_name) {
 
 class FujirouMetroLyrics
 {
-    private $_site = 'http://www.metrolyrics.com';
-    private $_apiSite = 'http://api.metrolyrics.com';
+    private $_site = 'https://www.metrolyrics.com';
+    private $_apiSite = 'https://api.metrolyrics.com';
     private $_apiKey = '196f657a46afb63ce3fd2015b9ed781280337ea7';
 
     public function __construct()
@@ -64,7 +64,7 @@ class FujirouMetroLyrics
     {
         $items = array(
             array(
-                'prefix' => "\n<!--WIDGET - RELATED-->",
+                'prefix' => "<!--WIDGET - RELATED-->",
                 'suffix' => "<!-- Second Section -->\n",
             ),
             array(
@@ -118,6 +118,8 @@ class FujirouMetroLyrics
 
         // remove extra ad line
         $pattern = '/\[ From: http:\/\/www.metrolyrics.com\/.*.html \]/';
+        $lyric = preg_replace($pattern, '', $lyric);
+        $pattern = "/[ \t]+\n/";
         $lyric = preg_replace($pattern, '', $lyric);
 
         $pattern = '/"musicSongTitle":"(.*?)"/';

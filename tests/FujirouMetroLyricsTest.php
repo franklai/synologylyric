@@ -14,7 +14,7 @@ final class FujirouMetroLyricsTest extends LyricsTestCase
         $answer = array(
             'artist' => 'Taylor Swift',
             'title'  => 'Style',
-            'id'     => 'http://www.metrolyrics.com/style-lyrics-taylor-swift.html'
+            'id'     => 'https://www.metrolyrics.com/style-lyrics-taylor-swift.html'
         );
 
         $this->search($artist, $title, $answer);
@@ -22,7 +22,7 @@ final class FujirouMetroLyricsTest extends LyricsTestCase
 
     public function testGet()
     {
-        $id = 'http://www.metrolyrics.com/style-lyrics-taylor-swift.html';
+        $id = 'https://www.metrolyrics.com/style-lyrics-taylor-swift.html';
         $path = 'FujirouMetroLyrics.taylor_swift.style.txt';
 
         $this->get($id, $path);
