@@ -23,7 +23,7 @@ class LyricsTestCase extends TestCase
         $item = $this->test_object->getFirstItem();
 
         foreach (self::$test_keys as $key) {
-            $this->assertEquals($item[$key], $answer[$key]);
+            $this->assertEquals($answer[$key], $item[$key]);
         }
     }
 
@@ -32,6 +32,6 @@ class LyricsTestCase extends TestCase
         $this->instance->get($this->test_object, $id);
         $lyric = $this->test_object->getLyric();
 
-        $this->assertEquals($lyric, file_get_contents(__DIR__."/content/$filename"));
+        $this->assertEquals(file_get_contents(__DIR__."/content/$filename"), $lyric);
     }
 }

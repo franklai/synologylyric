@@ -96,16 +96,16 @@ class FujirouCommon
     {
         $start = strpos($string, $prefix);
         if ($start === false) {
-            return $string;
+            return null;
         }
 
         $end = strpos($string, $suffix, $start);
         if ($end === false) {
-            return $string;
+            return null;
         }
 
         if ($start >= $end) {
-            return $string;
+            return null;
         }
 
         return substr($string, $start, $end - $start + strlen($suffix));

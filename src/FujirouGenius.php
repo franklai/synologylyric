@@ -92,15 +92,35 @@ class FujirouGenius
         $prefix = '<div class="lyrics">';
         $suffix = '</div>';
         $body = FujirouCommon::getSubString($content, $prefix, $suffix);
+        if (!$body) {
+            $prefix = ' Lyrics__Root';
+            $suffix = '<div class="SectionLeaderboard';
+            $body = FujirouCommon::getSubString($content, $prefix, $suffix);
+            if (!$body) {
+                return false;
+            }
+
+            # remove prefix and suffix
+            $body = preg_replace("/$prefix.*?>/", '', $body);
+            $body = str_replace($suffix, '', $body);
+
+            # add newline for ad block
+            $body = str_replace('<div class="SidebarAd__Container', '<br/><div class="', $body);
+        }
+        if (!$body) {
+            return false;
+        }
 
         $body = FujirouCommon::decodeHTML($body);
+        $body = str_replace('<br/>', "\n", $body);
         $body = trim(strip_tags($body));
 
-        $pattern = '/"Primary Artist":"(.*)"/U';
-        $artist = FujirouCommon::getFirstMatch($content, $pattern);
-
-        $pattern = '/"Title":"(.*)"/U';
-        $title = FujirouCommon::getFirstMatch($content, $pattern);
+        $pattern = '<meta content="(.*?) – (.*?)" property="twitter:title" />';
+        $artist = trim(FujirouCommon::getFirstMatch($content, $pattern));
+        $artist = str_replace("\xc2\xa0", " ", $artist);
+        $pattern = '<meta content=".*? – (.*?)" property="twitter:title" />';
+        $title = trim(FujirouCommon::getFirstMatch($content, $pattern));
+        $title = preg_replace('/[\x{200B}-\x{200D}]/u', '', $title);
 
         $lyric = sprintf(
             "%s\n\n%s\n\n\n%s",

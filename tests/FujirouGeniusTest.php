@@ -7,6 +7,22 @@ final class FujirouGeniusTest extends LyricsTestCase
 {
     protected $module = 'FujirouGenius';
 
+    public function testGetBTS()
+    {
+        $id = 'https://genius.com/Bts-dna-lyrics';
+        $path = 'FujirouGenius.bts.dna.txt';
+
+        $this->get($id, $path);
+    }
+
+    public function testGetAriana()
+    {
+        $id = 'https://genius.com/Ariana-grande-thank-u-next-lyrics';
+        $path = 'FujirouGenius.ariana_grande.thank_u_next.txt';
+
+        $this->get($id, $path);
+    }
+
     public function testSearch()
     {
         $artist = 'taylor swift  ';
