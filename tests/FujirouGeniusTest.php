@@ -7,6 +7,15 @@ final class FujirouGeniusTest extends LyricsTestCase
 {
     protected $module = 'FujirouGenius';
 
+    protected function setUp(): void
+    {
+        if (getenv('GITHUB_ACTIONS')) {
+            $this->markTestSkipped('GitHub Actions will hit human challenge for genius.');
+        }
+
+        parent::setUp();
+    }
+
     public function testGetBTS()
     {
         $id = 'https://genius.com/Bts-dna-lyrics';
