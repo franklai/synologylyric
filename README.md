@@ -1,5 +1,6 @@
 # synologylyric
-[![Build Status](https://travis-ci.com/franklai/synologylyric.svg?branch=master)](https://travis-ci.com/franklai/synologylyric)
+[![Test Status](https://travis-ci.com/franklai/synologylyric.svg?branch=master)](https://travis-ci.com/franklai/synologylyric)
+![link test](https://github.com/franklai/synologylyric/workflows/CI/badge.svg)
 
 Collection of Synology Audio Station Lyrics Module
 
