@@ -40,6 +40,12 @@ class FujirouGenius
         $obj = json_decode($content, true);
         $sections = $obj['response']['sections'];
 
+        if (!$sections) {
+            FujirouCommon::printMsg("Failed to get sections of search");
+            FujirouCommon::printMsg($content);
+            return 0;
+        }
+
         $song_section = null;
         $top_hit_section = null;
         foreach ($sections as $section) {
@@ -100,6 +106,7 @@ class FujirouGenius
             $body = FujirouCommon::getSubString($content, $prefix, $suffix);
             if (!$body) {
                 FujirouCommon::printMsg("Failed to get content from Lyrics__Root");
+                FujirouCommon::printMsg($content);
                 return false;
             }
 
