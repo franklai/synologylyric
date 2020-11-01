@@ -1,6 +1,8 @@
 <?php
 declare (strict_types = 1);
 
+define('DEBUG', true);
+
 use PHPUnit\Framework\TestCase;
 
 class LyricsTestCase extends TestCase
@@ -32,6 +34,6 @@ class LyricsTestCase extends TestCase
         $this->instance->get($this->test_object, $id);
         $lyric = $this->test_object->getLyric();
 
-        $this->assertEquals(file_get_contents(__DIR__."/content/$filename"), $lyric);
+        $this->assertEquals(file_get_contents(__DIR__ . "/content/$filename"), $lyric);
     }
 }

@@ -22,10 +22,10 @@ class FujirouGenius
 
     private function getQuery($artist, $title)
     {
-      $special_chars = ["(", ")"];
-      $stripped_artist = str_replace($special_chars, "", $artist);
-      $stripped_title = str_replace($special_chars, "", $title);
-      return urlencode("$stripped_artist $stripped_title");
+        $special_chars = ["(", ")"];
+        $stripped_artist = str_replace($special_chars, "", $artist);
+        $stripped_title = str_replace($special_chars, "", $title);
+        return urlencode("$stripped_artist $stripped_title");
     }
 
     public function search($handle, $artist, $title)
@@ -93,10 +93,13 @@ class FujirouGenius
         $suffix = '</div>';
         $body = FujirouCommon::getSubString($content, $prefix, $suffix);
         if (!$body) {
+            FujirouCommon::printMsg("Failed to get content from .lyrics, try Lyrics__Root");
+
             $prefix = ' Lyrics__Root';
             $suffix = '<div class="SectionLeaderboard';
             $body = FujirouCommon::getSubString($content, $prefix, $suffix);
             if (!$body) {
+                FujirouCommon::printMsg("Failed to get content from Lyrics__Root");
                 return false;
             }
 
@@ -108,6 +111,7 @@ class FujirouGenius
             $body = str_replace('<div class="SidebarAd__Container', '<br/><div class="', $body);
         }
         if (!$body) {
+            FujirouCommon::printMsg("Failed to get lyric content for parsing");
             return false;
         }
 

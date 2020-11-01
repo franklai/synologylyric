@@ -127,6 +127,18 @@ class FujirouCommon
     {
         return html_entity_decode($string, ENT_QUOTES, 'UTF-8');
     }
+
+    public static function printMsg($msg)
+    {
+        if (!defined('DEBUG')) {
+            return;
+        }
+        if (is_array($msg)) {
+            print_r($msg);
+        } else {
+            echo "\ndebug msg: $msg\n";
+        }
+    }
 }
 
 // vim: expandtab ts=4
