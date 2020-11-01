@@ -12,12 +12,12 @@ class FujirouCommon
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
-        curl_setopt($curl, CURLOPT_USERAGENT, 'LyricGet/3.1416');
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:82.0) Gecko/20100101 Firefox/82.0');
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
-        curl_setopt($curl, CURLOPT_VERBOSE, false);
+        curl_setopt($curl, CURLOPT_VERBOSE, true);
 
         curl_setopt($curl, CURLOPT_URL, $url);
 
