@@ -113,6 +113,7 @@ class FujirouMetroLyrics
 
         $lyric = str_replace('<br />', "\n", $lyric);
         $lyric = str_replace("<p class='verse'>", "\n\n", $lyric);
+        $lyric = str_replace("\n\n\n", "\n\n", $lyric);
         $lyric = trim(strip_tags($lyric));
         $lyric = FujirouCommon::decodeHTML($lyric);
 
