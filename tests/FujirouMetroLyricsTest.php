@@ -27,4 +27,12 @@ final class FujirouMetroLyricsTest extends LyricsTestCase
 
         $this->get($id, $path);
     }
+
+    public function testGet2()
+    {
+        $id = 'https://www.metrolyrics.com/faded-lyrics-alan-walker.html';
+        $path = 'FujirouMetroLyrics.alan_walker.faded.txt';
+
+        $this->get($id, $path);
+    }
 }
