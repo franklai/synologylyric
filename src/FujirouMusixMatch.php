@@ -58,14 +58,19 @@ class FujirouMusixMatch
 
         $content = FujirouCommon::getContent($url);
         if (!$content) {
+            FujirouCommon::printMsg("Failed to get content of $url");
             return false;
         }
+
+        $length = strlen($content);
+        FujirouCommon::printMsg("content length is $length of $url");
 
         $prefix = 'var __mxmState = ';
         $suffix = ';</script>';
 
         $json_string = FujirouCommon::getSubString($content, $prefix, $suffix);
         if (!$json_string || $json_string === $content) {
+            FujirouCommon::printMsg("Failed to find sub string of $url");
             return false;
         }
 
@@ -74,10 +79,15 @@ class FujirouMusixMatch
 
         $json = json_decode($json_string, true);
         if (!$json) {
+            FujirouCommon::printMsg("Failed to decode json of $url");
             return false;
         }
 
+        FujirouCommon::printMsg("json of $url");
+        FujirouCommon::printMsg($json);
+
         if (!isset($json['page']['lyrics']['lyrics']['body'])) {
+            FujirouCommon::printMsg("Failed to decode json of $url");
             return false;
         }
 
