@@ -3,8 +3,6 @@ declare (strict_types = 1);
 
 require_once 'LyricsTestCase.php';
 
-define('DEBUG', true);
-
 final class FujirouMusixMatchTest extends LyricsTestCase
 {
     protected $module = 'FujirouMusixMatch';

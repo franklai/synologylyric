@@ -52,6 +52,10 @@ class FujirouMusixMatch
 
     public function get($handle, $id)
     {
+        if (getenv('GITHUB_ACTIONS')) {
+            define('DEBUG', true);
+        }
+
         $lyric = '';
 
         $url = sprintf("%s%s", $this->sitePrefix, $id);
@@ -83,8 +87,10 @@ class FujirouMusixMatch
             return false;
         }
 
-        FujirouCommon::printMsg("json of $url");
-        FujirouCommon::printMsg($json);
+        if (getenv('GITHUB_ACTIONS')) {
+            FujirouCommon::printMsg("json of $url");
+            FujirouCommon::printMsg($json);
+        }
 
         if (!isset($json['page']['lyrics']['lyrics']['body'])) {
             FujirouCommon::printMsg("Failed to decode json of $url");
@@ -107,7 +113,8 @@ class FujirouMusixMatch
         return true;
     }
 
-    private function parseSearchResult($content) {
+    private function parseSearchResult($content)
+    {
         $result = array();
 
         $prefix = '<a class="title" ';
@@ -137,9 +144,9 @@ class FujirouMusixMatch
 
         $item = array(
             'artist' => $artist,
-            'title'  => $title,
-            'id'     => $id,
-            'partial'=> ''
+            'title' => $title,
+            'id' => $id,
+            'partial' => '',
         );
 
         array_push($result, $item);
