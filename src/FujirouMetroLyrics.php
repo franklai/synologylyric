@@ -6,7 +6,7 @@ spl_autoload_register(function ($class_name) {
 class FujirouMetroLyrics
 {
     private $_site = 'https://www.metrolyrics.com';
-    private $_apiSite = 'https://api.metrolyrics.com';
+    private $_apiSite = 'http://api.metrolyrics.com';
     private $_apiKey = '196f657a46afb63ce3fd2015b9ed781280337ea7';
 
     public function __construct()
