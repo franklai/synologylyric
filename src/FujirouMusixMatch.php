@@ -75,6 +75,7 @@ class FujirouMusixMatch
         $json_string = FujirouCommon::getSubString($content, $prefix, $suffix);
         if (!$json_string || $json_string === $content) {
             FujirouCommon::printMsg("Failed to find sub string of $url");
+            FujirouCommon::printMsg($content);
             return false;
         }
 
