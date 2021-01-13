@@ -88,13 +88,9 @@ class FujirouMusixMatch
             return false;
         }
 
-        if (getenv('GITHUB_ACTIONS')) {
-            FujirouCommon::printMsg("json of $url");
-            FujirouCommon::printMsg($json);
-        }
-
         if (!isset($json['page']['lyrics']['lyrics']['body'])) {
             FujirouCommon::printMsg("Failed to decode json of $url");
+            FujirouCommon::printMsg($json);
             return false;
         }
 
