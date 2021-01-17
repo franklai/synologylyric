@@ -74,6 +74,9 @@ class FujirouMusixMatch
 
         $json_string = FujirouCommon::getSubString($content, $prefix, $suffix);
         if (!$json_string || $json_string === $content) {
+            if ($this->isBlocked($content)) {
+                throw new BlockedException("musixmatch");
+            }
             FujirouCommon::printMsg("Failed to find sub string of $url");
             FujirouCommon::printMsg($content);
             return false;
@@ -149,5 +152,10 @@ class FujirouMusixMatch
         array_push($result, $item);
 
         return $result;
+    }
+
+    private function isBlocked($content)
+    {
+        return strpos($content, "We detected that your IP is blocked") > 0;
     }
 }
