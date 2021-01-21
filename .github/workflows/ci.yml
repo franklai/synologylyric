@@ -3,7 +3,7 @@ name: CI
 on:
   push:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '12 12 * * *'
 
 jobs:
   link-test:
