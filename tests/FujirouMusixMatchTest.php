@@ -9,12 +9,12 @@ final class FujirouMusixMatchTest extends LyricsTestCase
 
     public function testSearch()
     {
-        $artist = 'taylor swift  ';
-        $title = 'style';
+        $artist = 'live forever';
+        $title = 'oasis';
         $answer = array(
-            'artist' => 'Taylor Swift',
-            'title' => 'Style',
-            'id' => '/lyrics/Taylor-Swift/Style-2',
+            'artist' => 'Oasis',
+            'title' => 'Live Forever',
+            'id' => '/lyrics/Oasis/Live-Forever',
         );
 
         $this->search($artist, $title, $answer);
@@ -22,8 +22,8 @@ final class FujirouMusixMatchTest extends LyricsTestCase
 
     public function testGet()
     {
-        $id = '/lyrics/Taylor-Swift/Style-2';
-        $path = 'FujirouMusixMatch.taylor_swift.style.txt';
+        $id = '/lyrics/Oasis/Live-Forever';
+        $path = 'FujirouMusixMatch.oasis.live_forever.txt';
 
         try {
             $this->get($id, $path);
