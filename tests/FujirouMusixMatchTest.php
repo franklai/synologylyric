@@ -17,7 +17,11 @@ final class FujirouMusixMatchTest extends LyricsTestCase
             'id' => '/lyrics/Oasis/Live-Forever',
         );
 
-        $this->search($artist, $title, $answer);
+        try {
+            $this->search($artist, $title, $answer);
+        } catch (BlockedException $e) {
+            echo "musixmatch is blocked\n";
+        }
     }
 
     public function testGet()
@@ -28,7 +32,7 @@ final class FujirouMusixMatchTest extends LyricsTestCase
         try {
             $this->get($id, $path);
         } catch (BlockedException $e) {
-            echo "musixmatch is blocked";
+            echo "musixmatch is blocked\n";
         }
     }
 
@@ -42,6 +46,10 @@ final class FujirouMusixMatchTest extends LyricsTestCase
             'id' => '/lyrics/Galileo-Galilei/%E9%B3%A5%E3%81%A8%E9%B3%A5',
         );
 
-        $this->search($artist, $title, $answer);
+        try {
+            $this->search($artist, $title, $answer);
+        } catch (BlockedException $e) {
+            echo "musixmatch is blocked\n";
+        }
     }
 }
