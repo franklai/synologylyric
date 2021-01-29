@@ -9,6 +9,9 @@ class FujirouMusixMatch
 
     public function __construct()
     {
+        if (getenv('GITHUB_ACTIONS')) {
+            define('DEBUG', true);
+        }
     }
 
     public function getLyricsList($artist, $title, $info)
@@ -52,10 +55,6 @@ class FujirouMusixMatch
 
     public function get($handle, $id)
     {
-        if (getenv('GITHUB_ACTIONS')) {
-            define('DEBUG', true);
-        }
-
         $lyric = '';
 
         $url = sprintf("%s%s", $this->sitePrefix, $id);
@@ -120,10 +119,17 @@ class FujirouMusixMatch
         $prefix = '<a class="title" ';
         $suffix = '</div></li>';
         $block = FujirouCommon::getSubString($content, $prefix, $suffix);
+        if (!$block) {
+            FujirouCommon::printMsg("Failed to find block from contet");
+            FujirouCommon::printMsg($content);
+            return $result;
+        }
 
         $pattern = '/<a class="title" .*?><span.*?>(.*?)<\/span><\/a>/';
         $value = FujirouCommon::getFirstMatch($block, $pattern);
         if (!$value) {
+            FujirouCommon::printMsg("Failed to find title from block");
+            FujirouCommon::printMsg($block);
             return $result;
         }
         $title = FujirouCommon::decodeHTML($value);
@@ -131,6 +137,8 @@ class FujirouMusixMatch
         $pattern = '/<a class="artist".*?>(.*?)<\/a>/';
         $value = FujirouCommon::getFirstMatch($block, $pattern);
         if (!$value) {
+            FujirouCommon::printMsg("Failed to find artist from block");
+            FujirouCommon::printMsg($block);
             return $result;
         }
         $artist = FujirouCommon::decodeHTML($value);
@@ -138,6 +146,7 @@ class FujirouMusixMatch
         $pattern = '/<a class="title" href="(.+?)".*?><span.*?>.*?<\/span><\/a>/';
         $value = FujirouCommon::getFirstMatch($block, $pattern);
         if (!$value) {
+            FujirouCommon::printMsg("Failed to find id from block");
             return $result;
         }
         $id = $value;

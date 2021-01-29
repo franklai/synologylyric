@@ -1,8 +1,6 @@
 <?php
 declare (strict_types = 1);
 
-define('DEBUG', true);
-
 use PHPUnit\Framework\TestCase;
 
 class LyricsTestCase extends TestCase
