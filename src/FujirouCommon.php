@@ -130,7 +130,7 @@ class FujirouCommon
 
     public static function printMsg($msg)
     {
-        if (!defined('DEBUG')) {
+        if (!defined('debug')) {
             return;
         }
         if (is_array($msg)) {

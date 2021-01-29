@@ -10,7 +10,9 @@ class FujirouMusixMatch
     public function __construct()
     {
         if (getenv('GITHUB_ACTIONS')) {
-            define('DEBUG', true);
+            if (!defined('debug')) {
+                define('debug', true);
+            }
         }
     }
 
