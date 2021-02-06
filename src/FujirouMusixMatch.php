@@ -122,6 +122,9 @@ class FujirouMusixMatch
         $suffix = '</div></li>';
         $block = FujirouCommon::getSubString($content, $prefix, $suffix);
         if (!$block) {
+            if ($this->isBlocked($content)) {
+                throw new BlockedException("musixmatch");
+            }
             FujirouCommon::printMsg("Failed to find block from contet");
             FujirouCommon::printMsg($content);
             return $result;
