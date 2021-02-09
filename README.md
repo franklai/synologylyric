@@ -6,6 +6,8 @@ Collection of Synology Audio Station Lyrics Module
 
 From https://bitbucket.org/franklai/synologylyric/, which is Mercurial repository BitBucket disabled.
 
+You can download .aum files under [GitHub Releases](https://github.com/franklai/synologylyric/releases)
+
 ## Supported Sites
 * [genius](https://genius.com/)
 * [kkbox](https://www.kkbox.com/)
