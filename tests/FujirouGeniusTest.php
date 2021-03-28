@@ -34,12 +34,12 @@ final class FujirouGeniusTest extends LyricsTestCase
 
     public function testSearch()
     {
-        $artist = 'taylor swift  ';
-        $title = 'style';
+        $artist = ' keane';
+        $title = 'Somewhere Only We Know';
         $answer = array(
-            'artist' => 'Taylor Swift',
-            'title'  => 'Style',
-            'id'     => 'https://genius.com/Taylor-swift-style-lyrics'
+            'artist' => 'Keane',
+            'title'  => 'Somewhere Only We Know',
+            'id'     => 'https://genius.com/Keane-somewhere-only-we-know-lyrics'
         );
 
         $this->search($artist, $title, $answer);
@@ -47,8 +47,8 @@ final class FujirouGeniusTest extends LyricsTestCase
 
     public function testGet()
     {
-        $id = 'https://genius.com/Taylor-swift-style-lyrics';
-        $path = 'FujirouGenius.taylor_swift.style.txt';
+        $id = 'https://genius.com/Keane-somewhere-only-we-know-lyrics';
+        $path = 'FujirouGenius.keane.somewhere_only_we_know.txt';
 
         $this->get($id, $path);
     }
