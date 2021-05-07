@@ -16,14 +16,6 @@ final class FujirouGeniusTest extends LyricsTestCase
         parent::setUp();
     }
 
-    public function testGetBTS()
-    {
-        $id = 'https://genius.com/Bts-dna-lyrics';
-        $path = 'FujirouGenius.bts.dna.txt';
-
-        $this->get($id, $path);
-    }
-
     public function testGetAriana()
     {
         $id = 'https://genius.com/Ariana-grande-thank-u-next-lyrics';
