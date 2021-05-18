@@ -99,6 +99,7 @@ class FujirouMusixMatch
         }
 
         $body = $json['page']['lyrics']['lyrics']['body'];
+        $body = str_replace("′", "'", $body);
         $title = $json['page']['track']['name'];
         $artist = $json['page']['track']['artistName'];
 
