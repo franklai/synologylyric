@@ -124,6 +124,11 @@ class FujirouGenius
 
         $body = FujirouCommon::decodeHTML($body);
         $body = str_replace('<br/>', "\n", $body);
+
+        // remove sharing button
+        $body = preg_replace('/<button.*?<\/button>/', '', $body);
+        $body = preg_replace('/<label.*?<\/label>/', '', $body);
+
         $body = trim(strip_tags($body));
 
         $pattern = '<meta content="(.*?) – (.*?)" property="twitter:title" />';
