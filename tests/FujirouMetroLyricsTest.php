@@ -7,6 +7,13 @@ final class FujirouMetroLyricsTest extends LyricsTestCase
 {
     protected $module = 'FujirouMetroLyrics';
 
+    protected function setUp(): void
+    {
+        $this->markTestSkipped('metrolyrics site is down.');
+
+        parent::setUp();
+    }
+
     public function testSearch()
     {
         $artist = 'taylor swift  ';
