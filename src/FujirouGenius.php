@@ -128,6 +128,8 @@ class FujirouGenius
         // remove sharing button
         $body = preg_replace('/<button.*?<\/button>/', '', $body);
         $body = preg_replace('/<label.*?<\/label>/', '', $body);
+        $body = preg_replace('/<div class="EmbedForm__Copy.*?<\/div>/', '', $body);
+        $body = preg_replace('/<div class="ShareButtons_.*?<\/div>/', '', $body);
 
         $body = trim(strip_tags($body));
 
