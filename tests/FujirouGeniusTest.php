@@ -16,14 +16,6 @@ final class FujirouGeniusTest extends LyricsTestCase
         parent::setUp();
     }
 
-    public function testGetAriana()
-    {
-        $id = 'https://genius.com/Ariana-grande-thank-u-next-lyrics';
-        $path = 'FujirouGenius.ariana_grande.thank_u_next.txt';
-
-        $this->get($id, $path);
-    }
-
     public function testSearch()
     {
         $artist = ' keane';
