@@ -1,0 +1,11 @@
+{
+    "name": "fujirou_mojim",
+    "displayname": "mojim.com",
+    "description": "Mojim.com",
+    "version": "1.0",
+    "site": "https://mojim.com/",
+    "module": "FujirouMojim.php",
+    "type": "lyric",
+    "class": "FujirouMojim"
+}
+
