@@ -2,7 +2,7 @@
     "name": "fujirou_kkbox",
     "displayname": "kkbox.com",
     "description": "KKBOX",
-    "version": "1.5",
+    "version": "1.6",
     "site": "https://kkbox.com/",
     "module": "FujirouKkbox.php",
     "type": "lyric",

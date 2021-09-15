@@ -7,17 +7,21 @@ class FujirouKkbox
 {
     private $site = 'https://www.kkbox.com';
 
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function getLyricsList($artist, $title, $info) {
+    public function getLyricsList($artist, $title, $info)
+    {
         return $this->search($info, $artist, $title);
     }
-    public function getLyrics($id, $info) {
+    public function getLyrics($id, $info)
+    {
         return $this->get($info, $id);
     }
 
-    public function search($handle, $artist, $title) {
+    public function search($handle, $artist, $title)
+    {
         $count = 0;
 
         // https://www.kkbox.com/tw/tc/search.php?word=%E8%8C%84%E5%AD%90%E8%9B%8B+%E6%B5%AA%E6%B5%81%E9%80%A3
@@ -47,7 +51,8 @@ class FujirouKkbox
         return count($list);
     }
 
-    public function get($handle, $id) {
+    public function get($handle, $id)
+    {
         $lyric = '';
 
         $content = FujirouCommon::getContent($id);
@@ -74,8 +79,12 @@ class FujirouKkbox
 
         $title = $ld_json['name'];
         $artist = $ld_json['byArtist']['name'];
-        $body = $ld_json['recordingOf']['lyrics']['text'];
-        $body = trim(str_replace("\r\n", "\n", $body));
+        if (!array_key_exists('recordingOf', $ld_json)) {
+            $body = 'Currently there are no lyrics for this song.';
+        } else {
+            $body = $ld_json['recordingOf']['lyrics']['text'];
+            $body = trim(str_replace("\r\n", "\n", $body));
+        }
 
         $lyric = sprintf(
             "%s\n\n%s\n\n\n%s",
@@ -89,7 +98,8 @@ class FujirouKkbox
         return true;
     }
 
-    private function parseSearchResult($content) {
+    private function parseSearchResult($content)
+    {
         $result = array();
 
         // only find first item
@@ -118,9 +128,9 @@ class FujirouKkbox
 
         $item = array(
             'artist' => strip_tags($artist),
-            'title'  => strip_tags($title),
-            'id'     => sprintf("%s%s", $this->site, $url),
-            'partial'=> ''
+            'title' => strip_tags($title),
+            'id' => sprintf("%s%s", $this->site, $url),
+            'partial' => '',
         );
 
         array_push($result, $item);
