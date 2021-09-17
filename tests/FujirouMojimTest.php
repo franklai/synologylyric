@@ -7,6 +7,15 @@ final class FujirouMojimTest extends LyricsTestCase
 {
     protected $module = 'FujirouMojim';
 
+    protected function setUp(): void
+    {
+        if (getenv('GITHUB_ACTIONS')) {
+            $this->markTestSkipped('skip test Mojim on GitHub');
+        }
+
+        parent::setUp();
+    }
+
     public function testSearch()
     {
         $artist = '坂本真綾';
