@@ -77,6 +77,7 @@ class FujirouMojim
         $body = $this->filterAd($body);
         $body = $this->filterThank($body);
         $body = str_replace('<br />', "\n", $body);
+        $body = FujirouCommon::decodeHTML($body);
         $body = strip_tags($body);
         $body = trim($body);
 
