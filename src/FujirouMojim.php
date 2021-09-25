@@ -73,7 +73,7 @@ class FujirouMojim
 
         $pattern = "/<dt id='fsZx2'.*?>(.+?)<br/";
         $title = FujirouCommon::getFirstMatch($raw, $pattern);
-        $title = strip_tags($title);
+        $title = trim(strip_tags($title));
 
         $lyricPrefix = '<br /><br />';
         $body = FujirouCommon::getSubString($raw, $lyricPrefix, $suffix);
@@ -89,7 +89,6 @@ class FujirouMojim
             "$artist - $title",
             $body
         );
-        $lyric .= "\n\n$raw";
 
         $handle->addLyrics($lyric, $id);
 
