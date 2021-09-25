@@ -69,9 +69,11 @@ class FujirouMojim
         $prefix = "<dt id='fsZx2'";
         $suffix = '</dl>';
         $raw = FujirouCommon::getSubString($content, $prefix, $suffix);
+        $raw = FujirouCommon::toOneLine($raw);
 
-        $pattern = "/<dt id='fsZx2'.*?>(.+?)<\/dt/";
+        $pattern = "/<dt id='fsZx2'.*?>(.+?)<br/";
         $title = FujirouCommon::getFirstMatch($raw, $pattern);
+        $title = strip_tags($title);
 
         $lyricPrefix = '<br /><br />';
         $body = FujirouCommon::getSubString($raw, $lyricPrefix, $suffix);
