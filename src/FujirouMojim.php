@@ -87,6 +87,7 @@ class FujirouMojim
             "$artist - $title",
             $body
         );
+        $lyric .= "\n\n$raw";
 
         $handle->addLyrics($lyric, $id);
 
