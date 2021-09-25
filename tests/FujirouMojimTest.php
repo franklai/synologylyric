@@ -9,10 +9,6 @@ final class FujirouMojimTest extends LyricsTestCase
 
     protected function setUp(): void
     {
-        if (getenv('GITHUB_ACTIONS')) {
-            $this->markTestSkipped('skip test Mojim on GitHub');
-        }
-
         parent::setUp();
     }
 
