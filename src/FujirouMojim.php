@@ -59,6 +59,7 @@ class FujirouMojim
         if (!$content) {
             return false;
         }
+        $content = $this->convertUnicodePoint($content);
 
         $artistPrefix = "<dl id='fsZx1'";
         $artistSuffix = "<br /><br />";
@@ -77,7 +78,6 @@ class FujirouMojim
         $body = $this->filterAd($body);
         $body = $this->filterThank($body);
         $body = str_replace('<br />', "\n", $body);
-        $body = $this->convertUnicodePoint($body);
         $body = strip_tags($body);
         $body = trim($body);
 
