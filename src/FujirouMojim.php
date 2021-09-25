@@ -77,7 +77,7 @@ class FujirouMojim
         $body = $this->filterAd($body);
         $body = $this->filterThank($body);
         $body = str_replace('<br />', "\n", $body);
-        $body = FujirouCommon::decodeHTML($body);
+        $body = $this->convertUnicodePoint($body);
         $body = strip_tags($body);
         $body = trim($body);
 
@@ -109,6 +109,13 @@ class FujirouMojim
     private function filterThank($content)
     {
         return $content;
+    }
+
+    private function convertUnicodePoint($value)
+    {
+        $pattern = "/(&#\d+)/";
+        $replaced = preg_replace($pattern, "\\1;", $value);
+        return FujirouCommon::decodeHTML($replaced);
     }
 
     private function parseSearchResult($content)
