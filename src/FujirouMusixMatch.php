@@ -126,7 +126,7 @@ class FujirouMusixMatch
             if ($this->isBlocked($content)) {
                 throw new BlockedException("musixmatch");
             }
-            FujirouCommon::printMsg("Failed to find block from contet");
+            FujirouCommon::printMsg("Failed to find block from content");
             FujirouCommon::printMsg($content);
             return $result;
         }
