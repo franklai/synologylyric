@@ -11,8 +11,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: php-actions/composer@v2
-    - uses: php-actions/phpunit@v9
+    - uses: php-actions/composer@v6
+    - uses: php-actions/phpunit@v3
       with:
         bootstrap: vendor/autoload.php
         args: tests
