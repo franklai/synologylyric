@@ -9,12 +9,12 @@ final class FujirouMusixMatchTest extends LyricsTestCase
 
     public function testSearch()
     {
-        $artist = 'live forever';
-        $title = 'oasis';
+        $artist = 'keane';
+        $title = 'Somewhere Only We Know';
         $answer = array(
-            'artist' => 'Oasis',
-            'title' => 'Live Forever',
-            'id' => '/lyrics/Oasis/Live-Forever',
+            'artist' => 'Keane',
+            'title' => 'Somewhere Only We Know',
+            'id' => '/lyrics/Keane/Somewhere-Only-We-Know',
         );
 
         try {
