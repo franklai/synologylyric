@@ -26,8 +26,8 @@ final class FujirouMusixMatchTest extends LyricsTestCase
 
     public function testGet()
     {
-        $id = '/lyrics/RADWIMPS/September-San';
-        $path = 'FujirouMusixMatch.radwimps.september_san.txt';
+        $id = '/lyrics/Keane/Somewhere-Only-We-Know';
+        $path = 'FujirouMusixMatch.keane.somewhere_only_we_know.txt';
 
         try {
             $this->get($id, $path);
