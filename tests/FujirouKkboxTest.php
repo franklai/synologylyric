@@ -14,7 +14,7 @@ final class FujirouKkboxTest extends LyricsTestCase
         $answer = array(
             'artist' => '茄子蛋',
             'title' => '浪流連',
-            'id' => 'https://www.kkbox.com/tw/tc/song/22y00C6.d.JIIzpXIIzpX0XL-index.html',
+            'id' => 'https://www.kkbox.com/tw/tc/song/4ohAwOvqtWt5ngJ4No',
         );
 
         $this->search($artist, $title, $answer);
@@ -22,7 +22,7 @@ final class FujirouKkboxTest extends LyricsTestCase
 
     public function testGet()
     {
-        $id = 'https://www.kkbox.com/tw/tc/song/22y00C6.d.JIIzpXIIzpX0XL-index.html';
+        $id = 'https://www.kkbox.com/tw/tc/song/4ohAwOvqtWt5ngJ4No';
         $path = 'FujirouKkbox.egg_plantegg.txt';
 
         $this->get($id, $path);
@@ -30,7 +30,7 @@ final class FujirouKkboxTest extends LyricsTestCase
 
     public function testNoLyrics()
     {
-        $id = 'https://www.kkbox.com/tw/tc/song/vZP00L48426WRyKqWRyKq0XL-index.html';
+        $id = 'https://www.kkbox.com/tw/tc/song/CtWp-4QFUSEGYYd43P';
         $path = $path = 'FujirouKkbox.no_lyrics.txt';
 
         $this->get($id, $path);
