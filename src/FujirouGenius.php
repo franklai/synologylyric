@@ -116,6 +116,7 @@ class FujirouGenius
 
             # add newline for ad block
             $body = str_replace('<div class="SidebarAd__Container', '<br/><div class="', $body);
+            $body = str_replace('<div class="PrimisPlayer', '<br/><div class="', $body);
         }
         if (!$body) {
             FujirouCommon::printMsg("Failed to get lyric content for parsing");
