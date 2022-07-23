@@ -8,6 +8,6 @@
     "phpunit/phpunit": "^9"
   },
   "scripts": {
-      "test": "./vendor/bin/phpunit --bootstrap vendor/autoload.php tests"
+      "test": "./vendor/bin/phpunit --bootstrap vendor/autoload.php --testdox tests"
   }
 }
