@@ -52,7 +52,7 @@ class FujirouMusixMatch
             );
         }
 
-        return $count;
+        return count($list);
     }
 
     public function get($handle, $id)
@@ -165,7 +165,6 @@ class FujirouMusixMatch
         );
 
         array_push($result, $item);
-
         return $result;
     }
 
