@@ -42,7 +42,7 @@ class TestObject
         if (count($this->items) > 0) {
             return $this->items[0];
         } else {
-            return false;
+            return array();
         }
     }
     public function getLyric()

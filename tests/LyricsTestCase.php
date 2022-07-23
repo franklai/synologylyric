@@ -22,6 +22,9 @@ class LyricsTestCase extends TestCase
         $count = $this->instance->search($this->test_object, $artist, $title);
         $item = $this->test_object->getFirstItem();
 
+        $this->assertIsArray($item);
+        $this->assertGreaterThan(0, $count, "search result count is 0");
+
         foreach (self::$test_keys as $key) {
             $this->assertEquals($answer[$key], $item[$key]);
         }
