@@ -12,7 +12,7 @@ final class FujirouKkboxTest extends LyricsTestCase
         $artist = '茄子蛋';
         $title = '浪流連';
         $answer = array(
-            'artist' => '茄子蛋',
+            'artist' => '茄子蛋 (EggPlantEgg)',
             'title' => '浪流連',
             'id' => 'https://www.kkbox.com/tw/tc/song/4ohAwOvqtWt5ngJ4No',
         );

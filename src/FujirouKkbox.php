@@ -27,7 +27,7 @@ class FujirouKkbox
         // https://www.kkbox.com/tw/tc/search.php?word=%E8%8C%84%E5%AD%90%E8%9B%8B+%E6%B5%AA%E6%B5%81%E9%80%A3
         $keyword = sprintf("%s %s", $artist, $title);
         $searchUrl = sprintf(
-            "%s/tw/tc/search.php?word=%s&search=song",
+            "%s/api/search/song?lang=tc&terr=tw&q=%s",
             $this->site, urlencode($keyword)
         );
 
@@ -37,9 +37,7 @@ class FujirouKkbox
         }
         $list = $this->parseSearchResult($content);
 
-        for ($idx = 0; $idx < count($list); $idx++) {
-            $obj = $list[$idx];
-
+        foreach ($list as $obj) {
             $handle->addTrackInfoToList(
                 $obj['artist'],
                 $obj['title'],
@@ -102,38 +100,19 @@ class FujirouKkbox
     {
         $result = array();
 
-        // only find first item
-        $prefix = '<td class="song-data">';
-        $suffix = '</td>';
-
-        $oneLineContent = FujirouCommon::toOneLine($content);
-        $searchResult = FujirouCommon::getSubString($oneLineContent, $prefix, $suffix);
-
-        if (!$searchResult) {
+        $json = json_decode($content, true);
+        if (!$json) {
             return $result;
         }
 
-        $pattern = '/<a class="song-title" href="[^"]+" title="(.+)">/U';
-        $title = FujirouCommon::getFirstMatch($searchResult, $pattern);
-
-        $pattern = '/<a href="\/tw\/tc\/artist\/[^"]+" title="(.+)">/U';
-        $artist = FujirouCommon::getFirstMatch($searchResult, $pattern);
-
-        $pattern = '/<a class="song-title" href="(\/tw\/tc\/song[^"]+)" title=".+">/U';
-        $url = FujirouCommon::getFirstMatch($searchResult, $pattern);
-
-        if (!$title || !$artist || !$url) {
-            return $result;
+        foreach ($json['data']['result'] as $item) {
+            array_push($result, array(
+                'artist' => $item['album']['artist']['name'],
+                'title' => $item['name'],
+                'id' => $item['url'],
+                'partial' => '',
+            ));
         }
-
-        $item = array(
-            'artist' => strip_tags($artist),
-            'title' => strip_tags($title),
-            'id' => sprintf("%s%s", $this->site, $url),
-            'partial' => '',
-        );
-
-        array_push($result, $item);
 
         return $result;
     }
