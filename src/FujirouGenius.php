@@ -133,6 +133,7 @@ class FujirouGenius
         $body = preg_replace('/<div class="ShareButtons_.*?<\/div>/', '', $body);
         $body = preg_replace('/<div class="LyricsEditExplainer__.*?<\/div>/', '', $body);
         $body = preg_replace('/<h2.*?<\/h2>/', '', $body);
+        $body = preg_replace('/<div class="RecommendedSongs__Header-.*?<\/div>/', '', $body);
 
         $body = trim(strip_tags($body));
 
