@@ -38,12 +38,12 @@ final class FujirouMusixMatchTest extends LyricsTestCase
 
     public function testSearchJapanese()
     {
-        $artist = 'Galileo Galilei';
-        $title = '鳥と鳥';
+        $artist = 'ヨルシカ';
+        $title = '春泥棒';
         $answer = array(
-            'artist' => 'Galileo Galilei',
-            'title' => '鳥と鳥',
-            'id' => '/lyrics/Galileo-Galilei/%E9%B3%A5%E3%81%A8%E9%B3%A5',
+            'artist' => 'Yorushika',
+            'title' => 'Spring Thief',
+            'id' => '/lyrics/Yorushika/%E6%98%A5%E6%B3%A5%E6%A3%92',
         );
 
         try {
