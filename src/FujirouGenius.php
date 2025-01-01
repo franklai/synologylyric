@@ -116,10 +116,11 @@ class FujirouGenius
         $body = preg_replace('/<button.*?<\/button>/', '', $body);
         $body = preg_replace('/<label.*?<\/label>/', '', $body);
         $body = preg_replace('/<div class="EmbedForm__Copy.*?<\/div>/', '', $body);
-        $body = preg_replace('/<div class="ShareButtons.*?<\/div>/', '', $body);
         $body = preg_replace('/<div class="LyricsEditExplainer.*?<\/div>/', '', $body);
-        $body = preg_replace('/<h2.*?<\/h2>/', '', $body);
         $body = preg_replace('/<div class="RecommendedSongs.*?<\/div>/', '', $body);
+        $body = preg_replace('/<div class="ShareButtons.*?<\/div>/', '', $body);
+        $body = preg_replace('/<div class="StubhubLink.*?<\/div>/', '', $body);
+        $body = preg_replace('/<h2.*?<\/h2>/', '', $body);
 
         return $body;
     }
