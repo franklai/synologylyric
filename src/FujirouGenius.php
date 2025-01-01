@@ -85,6 +85,45 @@ class FujirouGenius
         return $count;
     }
 
+    private function get_by_lyrics_root($content)
+    {
+        $prefix = '<div data-lyrics-container="true"';
+        $suffix = '<div class="SectionLeaderboard';
+
+        $body = FujirouCommon::getSubString($content, $prefix, $suffix);
+        if ($body) {
+            // add newline for ad block
+            $body = str_replace(
+                '<div class="SidebarAd__Container',
+                '<br/><div class="',
+                $body
+
+            );
+
+            // add newline for lyrics-container
+            $body = str_replace(
+                '<div data-lyrics-container="true"',
+                '<br/><div data-lyrics-container="true"',
+                $body
+            );
+        }
+        return $body;
+    }
+
+    private function remove_non_lyric_tags($body)
+    {
+        // remove sharing button
+        $body = preg_replace('/<button.*?<\/button>/', '', $body);
+        $body = preg_replace('/<label.*?<\/label>/', '', $body);
+        $body = preg_replace('/<div class="EmbedForm__Copy.*?<\/div>/', '', $body);
+        $body = preg_replace('/<div class="ShareButtons.*?<\/div>/', '', $body);
+        $body = preg_replace('/<div class="LyricsEditExplainer.*?<\/div>/', '', $body);
+        $body = preg_replace('/<h2.*?<\/h2>/', '', $body);
+        $body = preg_replace('/<div class="RecommendedSongs.*?<\/div>/', '', $body);
+
+        return $body;
+    }
+
     public function get($handle, $id)
     {
         $result = array();
@@ -95,45 +134,17 @@ class FujirouGenius
             return false;
         }
 
-        $prefix = '<div class="lyrics">';
-        $suffix = '</div>';
-        $body = FujirouCommon::getSubString($content, $prefix, $suffix);
+        $body = $this->get_by_lyrics_root($content);
         if (!$body) {
-            FujirouCommon::printMsg("Failed to get content from .lyrics, try Lyrics__Root");
-
-            $prefix = ' Lyrics__Root';
-            $suffix = '<div class="SectionLeaderboard';
-            $body = FujirouCommon::getSubString($content, $prefix, $suffix);
-            if (!$body) {
-                FujirouCommon::printMsg("Failed to get content from Lyrics__Root");
-                FujirouCommon::printMsg($content);
-                return false;
-            }
-
-            # remove prefix and suffix
-            $body = preg_replace("/$prefix.*?>/", '', $body);
-            $body = str_replace($suffix, '', $body);
-
-            # add newline for ad block
-            $body = str_replace('<div class="SidebarAd__Container', '<br/><div class="', $body);
-            $body = str_replace('<div class="PrimisPlayer', '<br/><div class="', $body);
-        }
-        if (!$body) {
-            FujirouCommon::printMsg("Failed to get lyric content for parsing");
+            FujirouCommon::printMsg("Failed to get content from Lyrics__Root");
+            FujirouCommon::printMsg($content);
             return false;
         }
 
         $body = FujirouCommon::decodeHTML($body);
         $body = str_replace('<br/>', "\n", $body);
 
-        // remove sharing button
-        $body = preg_replace('/<button.*?<\/button>/', '', $body);
-        $body = preg_replace('/<label.*?<\/label>/', '', $body);
-        $body = preg_replace('/<div class="EmbedForm__Copy.*?<\/div>/', '', $body);
-        $body = preg_replace('/<div class="ShareButtons_.*?<\/div>/', '', $body);
-        $body = preg_replace('/<div class="LyricsEditExplainer__.*?<\/div>/', '', $body);
-        $body = preg_replace('/<h2.*?<\/h2>/', '', $body);
-        $body = preg_replace('/<div class="RecommendedSongs__Header-.*?<\/div>/', '', $body);
+        $body = $this->remove_non_lyric_tags($body);
 
         $body = trim(strip_tags($body));
 
@@ -193,9 +204,9 @@ if (!debug_backtrace()) {
 
     if ($argc === 2) {
         $url = $argv[1];
-        $instance->get($test_object, $url);
 
         echo "get [$url]\n";
+        $instance->get($test_object, $url);
 
         $lyric = $test_object->getLyric();
 
@@ -212,10 +223,19 @@ if (!debug_backtrace()) {
     }
 
     echo "search for [$artist] [$title]\n";
-
     $instance->search($test_object, $artist, $title);
 
     $item = $test_object->getFirstItem();
 
     var_dump($item);
+
+    $url = $item['id'];
+
+    echo "get [$url]\n";
+    $instance->get($test_object, $url);
+
+    $lyric = $test_object->getLyric();
+
+    echo "=== lyric ===\n";
+    echo $lyric;
 }
