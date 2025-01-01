@@ -49,4 +49,12 @@ final class FujirouGeniusTest extends LyricsTestCase
 
         $this->search($artist, $title, $answer);
     }
+
+    public function testGetJapanese()
+    {
+        $id = 'https://genius.com/Maaya-sakamoto-tune-the-rainbow-lyrics';
+        $path = 'FujirouGenius.sakamoto_maaya.tune_the_rainbow.txt';
+
+        $this->get($id, $path);
+    }
 }
