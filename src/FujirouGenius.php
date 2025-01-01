@@ -184,3 +184,38 @@ class FujirouGenius
         return array_map($tryDecodeFunc, $obj);
     }
 }
+
+if (!debug_backtrace()) {
+    $module = "FujirouGenius";
+    $refClass = new ReflectionClass($module);
+    $instance = $refClass->newInstance();
+    $test_object = new TestObject();
+
+    if ($argc === 2) {
+        $url = $argv[1];
+        $instance->get($test_object, $url);
+
+        echo "get [$url]\n";
+
+        $lyric = $test_object->getLyric();
+
+        echo "=== lyric ===\n";
+        echo $lyric;
+        return;
+    }
+
+    $artist = 'Mariah Carey';
+    $title = 'one sweet day';
+    if ($argc === 3) {
+        $artist = $argv[1];
+        $title = $argv[2];
+    }
+
+    echo "search for [$artist] [$title]\n";
+
+    $instance->search($test_object, $artist, $title);
+
+    $item = $test_object->getFirstItem();
+
+    var_dump($item);
+}
