@@ -152,9 +152,11 @@ class FujirouGenius
         $pattern = '<meta content="(.*?) – (.*?)" property="twitter:title" />';
         $artist = trim(FujirouCommon::getFirstMatch($content, $pattern));
         $artist = str_replace("\xc2\xa0", " ", $artist);
+        $artist = FujirouCommon::decodeHTML($artist);
         $pattern = '<meta content=".*? – (.*?)" property="twitter:title" />';
         $title = trim(FujirouCommon::getFirstMatch($content, $pattern));
         $title = preg_replace('/[\x{200B}-\x{200D}]/u', '', $title);
+        $title = FujirouCommon::decodeHTML($title);
 
         $lyric = sprintf(
             "%s\n\n%s\n\n\n%s",
