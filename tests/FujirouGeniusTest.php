@@ -98,4 +98,17 @@ final class FujirouGeniusTest extends LyricsTestCase
 
         $this->search($artist, $title, $answer);
     }
+
+    public function testSearchWithMix()
+    {
+        $artist = 'Late Night Alumni';
+        $title = 'The This This (Original Mix)';
+        $answer = array(
+            'artist' => 'Late Night Alumni',
+            'title' => 'The This This',
+            'id' => 'https://genius.com/Late-night-alumni-the-this-this-lyrics'
+        );
+
+        $this->search($artist, $title, $answer);
+    }
 }

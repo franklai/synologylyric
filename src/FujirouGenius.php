@@ -24,6 +24,7 @@ class FujirouGenius
     {
         $title = preg_replace('/[\[(]radio edit[\])]/i', '', $title);
         $title = preg_replace('/[\[(]album version[\])]/i', '', $title);
+        $title = preg_replace('/[\[(].+? mix[\])]/i', '', $title);
         return $title;
     }
 
