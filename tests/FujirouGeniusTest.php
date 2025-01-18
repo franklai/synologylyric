@@ -73,4 +73,29 @@ final class FujirouGeniusTest extends LyricsTestCase
 
         $this->get($id, $path);
     }
+    public function testSearchWithAlbumVersion()
+    {
+        $artist = 'Mariah Carey';
+        $title = 'Fantasy [Album Version]';
+        $answer = array(
+            'artist' => 'Mariah Carey',
+            'title' => 'Fantasy',
+            'id' => 'https://genius.com/Mariah-carey-fantasy-lyrics'
+        );
+
+        $this->search($artist, $title, $answer);
+    }
+
+    public function testSearchWithRadioEdit()
+    {
+        $artist = 'Linkin Park';
+        $title = 'Bleed It Out (Radio Edit)';
+        $answer = array(
+            'artist' => 'Linkin Park',
+            'title' => 'Bleed It Out',
+            'id' => 'https://genius.com/Linkin-park-bleed-it-out-lyrics'
+        );
+
+        $this->search($artist, $title, $answer);
+    }
 }

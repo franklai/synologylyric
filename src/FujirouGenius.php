@@ -20,9 +20,18 @@ class FujirouGenius
         return $this->get($info, $id);
     }
 
+    private function adjustTitleForQuery($title)
+    {
+        $title = preg_replace('/[\[(]radio edit[\])]/i', '', $title);
+        $title = preg_replace('/[\[(]album version[\])]/i', '', $title);
+        return $title;
+    }
+
     private function getQuery($artist, $title)
     {
-        $special_chars = ["(", ")"];
+        $title = $this->adjustTitleForQuery($title);
+
+        $special_chars = ["(", ")",];
         $stripped_artist = str_replace($special_chars, "", $artist);
         $stripped_title = str_replace($special_chars, "", $title);
         return urlencode("$stripped_artist $stripped_title");
@@ -34,6 +43,7 @@ class FujirouGenius
 
         $url = $this->apiUrl;
         $query = $this->getQuery($artist, $title);
+        FujirouCommon::printMsg("query string is [$query]");
         $search_url = "$url?q=$query";
 
         $content = FujirouCommon::getContent($search_url);
@@ -201,6 +211,8 @@ class FujirouGenius
 
 if (!debug_backtrace()) {
     $module = "FujirouGenius";
+    define("debug", true);
+
     $refClass = new ReflectionClass($module);
     $instance = $refClass->newInstance();
     $test_object = new TestObject();
