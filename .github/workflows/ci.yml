@@ -8,8 +8,13 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
-    - uses: php-actions/composer@v6
-    - uses: php-actions/phpunit@v4
+    - uses: shivammathur/setup-php@v2
       with:
-        bootstrap: vendor/autoload.php
-        args: --testdox tests
+        php-version: '8.3'
+        # Ensure the pcov or xdebug extension is here if you need code coverage
+        coverage: pcov
+    - name: Install Dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Run Tests
+      run: vendor/bin/phpunit --testdox tests
