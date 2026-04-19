@@ -105,17 +105,10 @@ class FujirouGenius
         if ($body) {
             // add newline for ad block
             $body = str_replace(
-                '<div class="SidebarAd__Container',
+                '<div class="RightSidebar__Container',
                 '<br/><div class="',
                 $body
 
-            );
-
-            // add newline for lyrics-container
-            $body = str_replace(
-                '<div data-lyrics-container="true"',
-                '<br/><div data-lyrics-container="true"',
-                $body
             );
         }
         return $body;
@@ -126,11 +119,14 @@ class FujirouGenius
         // remove sharing button
         $body = preg_replace('/<button.*?<\/button>/', '', $body);
         $body = preg_replace('/<label.*?<\/label>/', '', $body);
-        $body = preg_replace('/<div class="EmbedForm__Copy.*?<\/div>/', '', $body);
         $body = preg_replace('/<div class="LyricsEditExplainer.*?<\/div>/', '', $body);
         $body = preg_replace('/<div class="RecommendedSongs.*?<\/div>/', '', $body);
         $body = preg_replace('/<div class="ShareButtons.*?<\/div>/', '', $body);
-        $body = preg_replace('/<div class="StubhubLink.*?<\/div>/', '', $body);
+
+        $body = preg_replace('/<div class="SongBioPreview__Container.*?<\/div>/s', '', $body);
+        $body = preg_replace('/<div class="Dropdown__Container.*?<\/div>/', '', $body);
+        $body = preg_replace('/<div class="LyricsHeader__GroupContainer.*?<\/div>/', '', $body);
+
         $body = preg_replace('/<h2.*?<\/h2>/', '', $body);
 
         return $body;
